@@ -1,0 +1,240 @@
+<div class="page-content" id="content">
+  <app-header></app-header>
+  <app-menu></app-menu>
+
+  <div class="row m-2">
+    <div class="col-md-12 mt-4">
+      <h3>{{ "txtRegistros" | translate }}</h3>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a [routerLink]="['/', 'home']">Home</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ "txtRegistros" | translate }}
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="row m-2 mt-4">
+    <div class="col-md-8 alturaminima mb-5">
+      <div class="form">
+        <mat-form-field floatPlaceholder="never" color="accent">
+          <input
+            matInput
+            #filter
+            placeholder="Filtrar registros"
+            (keyup)="updateFilter($event)"
+          />
+        </mat-form-field>
+      </div>
+
+      <ngx-datatable
+        #mydatatable
+        class="material striped"
+        headerHeight="50"
+        [limit]="15"
+        [columnMode]="'force'"
+        footerHeight="50"
+        rowHeight="auto"
+        [rows]="rows"
+      >
+        <ngx-datatable-column name="id" [maxWidth]="160">
+          <ng-template
+            class="mat-column-id"
+            ngx-datatable-cell-template
+            let-rowIndex="rowIndex"
+            let-value="value"
+            let-row="row"
+          >
+            <div class="text-center">{{ row.id }}</div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Tarea" [maxWidth]="1830">
+          <ng-template
+            ngx-datatable-cell-template
+            let-rowIndex="rowIndex"
+            let-value="value"
+            let-row="row"
+          >
+            <span
+              title="Doble click para editar"
+              (dblclick)="editing[rowIndex + '-tarea'] = true"
+              *ngIf="!editing[rowIndex + '-tarea']"
+            >
+              {{ value }}
+            </span>
+            <input
+              required
+              autofocus
+              (blur)="updateValue($event, 'tarea', rowIndex)"
+              *ngIf="editing[rowIndex + '-tarea']"
+              type="text"
+              class="form-control"
+              [value]="value"
+              [title]="row.id"
+            />
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Hora" [maxWidth]="110">
+          <ng-template
+            ngx-datatable-cell-template
+            let-rowIndex="rowIndex"
+            let-value="value"
+            let-row="row"
+          >
+            <span
+              title="Doble click para editar"
+              (dblclick)="editing[rowIndex + '-hora'] = true"
+              *ngIf="!editing[rowIndex + '-hora']"
+            >
+              {{ value }}
+            </span>
+            <input
+              required
+              class="form-control"
+              min="5"
+              max="5"
+              (onError)="(myHandleError)"
+              pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+              [class.is-invalid]="hora.invalid && hora.touched"
+              autofocus
+              (blur)="updateValue($event, 'hora', rowIndex)"
+              *ngIf="editing[rowIndex + '-hora']"
+              type="time"
+              [value]="value"
+              [title]="row.id"
+            />
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Estatus" [maxWidth]="90">
+          <ng-template
+            ngx-datatable-cell-template
+            let-rowIndex="rowIndex"
+            let-row="row"
+            let-value="value"
+          >
+            <div
+              [ngClass]="{
+                positive: row.estatus == 'OK',
+                negative: row.estatus == 'KO',
+                posnegtive: row.estatus == 'OK-INC'
+              }"
+            >
+              <span
+                title="Doble click para editar"
+                (dblclick)="editing[rowIndex + '-estatus'] = true"
+                *ngIf="!editing[rowIndex + '-estatus']"
+              >
+                {{ value }}
+              </span>
+              <input type="hidden" #varId [value]="row.id" />
+
+              <select
+                class="form-control"
+                name="estatus"
+                *ngIf="editing[rowIndex + '-estatus']"
+                (blur)="editing[rowIndex + '-estatus'] = false"
+                (change)="updateValue($event, 'estatus', rowIndex)"
+                [value]="value"
+                [title]="row.id"
+              >
+                <option value="OK">OK</option>
+                <option value="KO">KO</option>
+                <option value="OK-INC">OK-INC</option>
+              </select>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="ver" [maxWidth]="60">
+          <ng-template
+            class="mat-column-id"
+            ngx-datatable-cell-template
+            let-row="row"
+          >
+            <div class="text-center">
+              <a [routerLink]="['/personas', row.id]" class="nav-link  "
+                ><i class="fa fa-window-restore"></i
+              ></a>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+    <div class="col-md-4 pt-5">
+
+
+      <div class="form-group">
+        <label for="tarea">Tarea</label>
+        <input
+          required
+          style="background-color:white;"
+          placeholder="Resumen tarea"
+          class="form-control form-control-sm"
+          [class.is-invalid]="tarea.invalid && tarea.touched"
+          #tarea="ngModel"
+          required
+          minlength="4"
+          name="tarea"
+          type="text"
+          [(ngModel)]="datoregistro.tarea"
+        />
+      </div>
+
+      <div class="form-group" >
+        <label for="tarea">Hora</label>
+        <input
+          required id="reloj"
+          style="background-color:white;"
+          placeholder="00:00"
+          class="form-control form-control-sm"
+          [class.is-invalid]="hora.invalid && hora.touched"
+          #hora="ngModel"
+          pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+          minlength="5"
+          maxlength="5"
+          type="text"
+          [(ngModel)]="datoregistro.hora"
+   
+        />
+
+
+
+      </div>
+      <div class="form-group">
+        <label for="tarea">Status</label>
+
+        <select
+          required
+          style="background-color:white;"
+          class="form-control form-control-sm"
+          name="estatus"
+          placeholder="Seleccione estatus"
+          [class.is-invalid]="estatus.invalid && estatus.touched"
+          #estatus="ngModel"
+          [(ngModel)]="datoregistro.estatus"
+        >
+          <option value="OK">OK</option>
+          <option value="KO">KO</option>
+          <option value="OK-INC">OK-INC</option>
+        </select>
+      </div>
+      <div class="form-group text-center">
+        <button (click)="altaRegistro()" class="btn btn-primary colortopacio">
+          AGREGAR
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>
+
+
