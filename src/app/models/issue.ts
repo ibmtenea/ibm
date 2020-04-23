@@ -1,8 +1,13 @@
 export class Issue {
-  id: number;
+  id_tarea: string;
   tarea: string;
   hora: string;
   estatus: string;
-  // created_at: string;
-  // updated_at: string;
+  observaciones: string;
+  fecha: string;
+  fechamodi: string;
+  id_categoria: string;
+
+  flag_visibilidad: string;
+  prioridad: string;
 }

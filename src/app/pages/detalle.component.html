@@ -1,0 +1,322 @@
+<div class="page-content" id="content">
+  <app-header></app-header>
+  <app-menu></app-menu>
+
+  <div class="row m-2">
+    <div class="col-md-12 mt-4 tituloseccion">
+      <h3>{{ "txtRegistros" | translate }}</h3>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a [routerLink]="['/', 'home']">Home</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ registro.tarea }} - #{{ registro.id_tarea }}
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <form (ngSubmit)="guardarregistro(f)" #f="ngForm">
+    <div class="row m-2 mt-4">
+      <div class="col-md-12">
+        <div class="alert linealbase">
+          {{ "txtCreado" | translate }}:
+          <em class="text-muted">{{
+            registro.fecha | date: "dd/MM/y HH:mm"
+          }}</em>
+          | {{ "txtUltimaModificacion" | translate }}:
+          <em class="text-muted" *ngIf="registro.fechamodi == null"
+            >nunca modificado</em
+          >
+          <em class="text-muted">{{
+            registro.fechamodi | date: "dd/MM/y HH:mm"
+          }}</em>
+        </div>
+      </div>
+    </div>
+
+    <div class="row m-2 mt-4">
+      <div class="col-md-7 alturaminima mb-5">
+        <input
+          type="hidden"
+          class="form-control"
+          name="id_tarea"
+          readonly
+          [(ngModel)]="registro.id_tarea"
+        />
+
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <label for="tarea">
+                {{ "txtTarea" | translate }}
+              </label>
+              <input
+                name="tarea"
+                required
+                class="form-control form-control-sm"
+                [class.is-invalid]="tarea.invalid && tarea.touched"
+                #tarea="ngModel"
+                minlength="4"
+                type="text"
+                [(ngModel)]="registro.tarea"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="hora">
+                {{ "txtHora" | translate }}
+              </label>
+              <input
+                name="hora"
+                required
+                id="reloj"
+                style="background-color: white;"
+                placeholder="00:00"
+                class="form-control form-control-sm hora"
+                [class.is-invalid]="hora.invalid && hora.touched"
+                #hora="ngModel"
+                pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+                minlength="5"
+                maxlength="5"
+                type="text"
+                [(ngModel)]="registro.hora"
+                [ngxTimepicker]="fullTime"
+                [format]="24"
+                readonly
+              />
+
+              <ngx-material-timepicker
+                #fullTime
+                [minutesGap]="30"
+              ></ngx-material-timepicker>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="estatus">
+                {{ "txtStatus" | translate }}
+              </label>
+
+              <select
+                required
+                class="form-control form-control-sm"
+                name="estatus"
+                [class.is-invalid]="estatus.invalid && estatus.touched"
+                #estatus="ngModel"
+                [(ngModel)]="registro.estatus"
+                ><option value="{{ registro.estatus }}" selected>{{
+                  registro.estatus
+                }}</option>
+                <option value="OK">OK</option>
+                <option value="KO">KO</option>
+                <option value="OK-INC">OK-INC</option>
+                <option value="PENDIENTE">PENDIENTE</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="id_categoria">Categoría </label>
+              <select
+                required
+                style="background-color: white;"
+                class="form-control form-control-sm"
+                name="id_categoria"
+                placeholder="Seleccione categoria"
+                #id_categoria="ngModel"
+                [(ngModel)]="registro.id_categoria"
+              >
+                <option
+                  *ngFor="let categoria of categorias"
+                  value="{{ categoria.id_categoria }}"
+                >
+                  {{ categoria.categoria_name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+<!--acciones variables-->
+        <div class="row">
+          <div class="col-md-12 mb-3" >
+            <!--accion puntual-->
+            <div *ngIf="registro.id_categoria === '3'">
+               <app-accion></app-accion> 
+            </div>
+            <!--/end accion puntual-->
+            <!--check-->
+            <div *ngIf="registro.id_categoria === '1'">
+              <app-check></app-check>
+            </div>
+            <!--end check-->
+          </div>  
+        </div>
+<!--/end acciones variables-->
+        <div class="row">
+          <div class="col-4">
+            <label for="prioridad">Prioridad</label>
+            <select
+              required
+              style="background-color: white;"
+              class="form-control form-control-sm"
+              name="prioridad"
+              placeholder="Seleccione prioridad"
+              #prioridad="ngModel"
+              [(ngModel)]="registro.prioridad"
+            >
+              <option [ngValue]="null" selected>Seleccione prioridad</option>
+              <option value="alta">Alta</option>
+              <option value="media">Media</option>
+              <option value="baja">Baja</option>
+            </select>
+          </div>
+          <div class="col-4"></div>
+          <div class="col-4"></div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 mt-3 mb-3">
+            <hr />
+
+            <div class="row">
+              <div class="col-10 mt-2 mb-2 pt3 pb3">
+                <h5 class="titolpetit">
+                  Personas que participan en el seguimiento
+                </h5>
+              </div>
+              <div class="col-2 mt-2 mb-2 text-right">
+                <a
+                  alt="Asignar nueva persona de seguimiento"
+                  title="Asignar nueva persona de seguimiento"
+                  (click)="open(content)"
+                  class="altaseguimiento"
+                  ><i class="fa fa-plus fa-1"></i
+                ></a>
+              </div>
+            </div>
+
+            <div class="row">
+              <div
+                class="col-12 mt-1 mb-1 pb1 pt1"
+                *ngFor="let suscripcio of suscripcion"
+              >
+                <div class="row">
+                  <div class="col-4">
+                    {{ suscripcio.id_seguimiento }} - {{ suscripcio.nombres }}
+                  </div>
+                  <div class="col-4">{{ suscripcio.email }}</div>
+                  <div class="col-2">{{ suscripcio.rol_name }}</div>
+                  <div class="col-2 text-right">
+                    <a
+                      alt="Eliminar persona de seguimiento"
+                      title="Eliminar persona de seguimiento"
+                      (click)="eliminarpersona(suscripcio, i)"
+                      class="altaseguimiento"
+                      ><i class="fa fa-trash"></i
+                    ></a>
+                  </div>
+                </div>
+
+                <hr class="bdott" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group text-center">
+              <button type="submit" class="btn btn-info mr-2">
+                {{ "txtModificar" | translate }}
+              </button>
+              <button [routerLink]="['/home']" class="btn btn-warning">
+                {{ "txtVolver" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5 alturaminima mb-5">
+        <div class="form-group">
+          <label for="observaciones">{{
+            "txtObservaciones" | translate
+          }}</label>
+          <ckeditor
+          [config]="{ toolbar: [ 'link', '|', 'bold', 'italic' ] }"
+            (ready)="onReady($event)"
+            id="ibmeditor"
+            placeholder="Observaciones"
+            #observaciones="ngModel"
+            maxlength="2000"
+            name="observaciones"
+            [(ngModel)]="registro.observaciones"
+            [editor]="Editor"
+            data=""
+          ></ckeditor>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        Seguimiento de la issue
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <input
+          name="id_tarea"
+          type="hidden"
+          #id_tarea="ngModel"
+          [(ngModel)]="datoregistro.id_tarea"
+        />
+
+        <label for="id_persona"
+          >Seleccione la persona para designarle el seguimiento</label
+        >
+        <div class="input-group">
+          <select
+            required
+            style="background-color: white;"
+            class="form-control form-control-sm"
+            name="id_persona"
+            placeholder="Seleccione persona"
+            #id_persona="ngModel"
+            [(ngModel)]="datoregistro.id_persona"
+          >
+            <option [ngValue]="null">Seleccione persona</option>
+            <option
+              *ngFor="let persona of personas"
+              value="{{ persona.id_persona }}"
+            >
+              {{ persona.nombres }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button (click)="guardarseguimiento()" class="btn btn-info">
+        Añadir persona
+      </button>
+    </div>
+  </ng-template>
+
+  <app-footer></app-footer>
+</div>

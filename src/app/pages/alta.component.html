@@ -1,0 +1,224 @@
+<div class="page-content" id="content">
+  <app-header></app-header>
+  <app-menu></app-menu>
+
+  <div class="row m-2">
+    <div class="col-md-12 mt-4 tituloseccion">
+      <h3>{{ "txtRegistros" | translate }}</h3>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a [routerLink]="['/', 'home']">Home</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ "txtNuevoRegistro" | translate }}
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="row m-2">
+    <div class="col-md-6 pt-5">
+      <div class="form-group">
+        <label for="tarea">{{ "txtTarea" | translate }}</label>
+        <input
+          required
+          style="background-color: white;"
+          placeholder="Resumen tarea"
+          class="form-control form-control-sm"
+          [class.is-invalid]="tarea.invalid && tarea.touched"
+          #tarea="ngModel"
+          required
+          minlength="4"
+          name="tarea"
+          type="text"
+          [(ngModel)]="datoregistro.tarea"
+        />
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group 24hr-example">
+            <label for="hora">{{ "txtHora" | translate }}</label>
+            <input
+              required
+              aria-label="24hr format"
+              style="background-color: white;"
+              placeholder="00:00"
+              class="form-control form-control-sm reloj"
+              [class.is-invalid]="hora.invalid && hora.touched"
+              #hora="ngModel"
+              minlength="5"
+              maxlength="5"
+              type="text"
+              [(ngModel)]="datoregistro.hora"
+              [ngxTimepicker]="fullTime"
+              [format]="24"
+              readonly
+            />
+            <ngx-material-timepicker
+              #fullTime
+              [minutesGap]="30"
+            ></ngx-material-timepicker>
+          </div>
+        </div>
+
+        
+    
+<!-- <div class="form-group">
+         
+            <label for="id_categoria">Categoría</label>
+            <select
+              required
+              style="background-color: white;"
+              class="form-control form-control-sm"
+              name="id_categoria"
+              placeholder="Seleccione categoria"
+              #id_categoria="ngModel"
+              [(ngModel)]="datoregistro.id_categoria"
+            >
+              <option [ngValue]="null">Seleccione Categoría</option>
+              <option
+                *ngFor="let categoria of categorias"
+                value="{{ categoria.id_categoria }}"
+              >
+                {{ categoria.categoria_name }}
+              </option>
+            </select>
+</div> -->
+
+
+
+
+    
+        <div class="col-md-6">
+            <label for="prioridad">Prioridad</label>
+            <select
+              required
+              style="background-color: white;"
+              class="form-control form-control-sm"
+              name="prioridad"
+              placeholder="Seleccione prioridad"
+              #prioridad="ngModel"
+              [(ngModel)]="datoregistro.prioridad"
+            >
+              <option [ngValue]="null" selected>Seleccione prioridad</option>
+              <option value="alta">Alta</option>
+              <option value="media">Media</option>
+              <option value="baja">Baja</option>
+            </select>
+        </div>
+        <div class="col-md-2"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <!-- <div class="form-group">
+            <label for="tarea">Asignar persona</label>
+            <input
+              required
+              style="background-color: white;"
+              placeholder="Resumen tarea"
+              class="form-control form-control-sm"
+              [class.is-invalid]="tarea.invalid && tarea.touched"
+              #tarea="ngModel"
+              required
+              minlength="4"
+              name="tarea"
+              type="text"
+              [(ngModel)]="datoregistro.tarea"
+            />
+          </div> -->
+        </div>
+        <div class="col-md-4">
+
+            
+<!-- 
+
+            <div class="form-group">
+                <label for="id_recurrencia">Recurrencia</label>
+                <select
+                  required
+                  style="background-color: white;"
+                  class="form-control form-control-sm"
+                  name="id_recurrencia"
+                  #estatus="ngModel"
+                  [(ngModel)]="datoregistro.id_recurrencia"
+                >
+                  <option [ngValue]="null">Seleccione recurrencia</option>
+                  <option
+                    *ngFor="let recurrencia of recurrencias"
+                    value="{{ recurrencia.id_recurrencia }}"
+                  >
+                    {{ recurrencia.recurrencia_name }}
+                  </option>
+                </select>
+              </div>
+
+ -->
+
+
+
+
+
+        </div>
+        <div class="col-md-4">
+          <div *ngIf="datoregistro.id_categoria === '3'">
+            <label for="dp">Fecha fin acción</label>
+            <div class="input-group">
+              <input
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+                name="dp"
+                [(ngModel)]="model"
+                ngbDatepicker
+                #d="ngbDatepicker"
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-outline-secondary calendar"
+                  (click)="d.toggle()"
+                  type="button"
+                ></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-4">
+
+        </div>
+        <div class="col-4"></div>
+        <div class="col-4"></div>
+      </div>
+    </div>
+    <div class="col-md-6 pt-5">
+      <div class="form-group">
+        <label for="observaciones">{{ "txtObservaciones" | translate }}</label>
+
+        <ckeditor
+          (ready)="onReady($event)"
+          rows="10"
+          placeholder="Observaciones"
+          #observaciones="ngModel"
+          maxlength="2000"
+          name="observaciones"
+          [(ngModel)]="datoregistro.observaciones"
+          [editor]="Editor"
+          data=""
+        ></ckeditor>
+      </div>
+
+      <div class="form-group text-center">
+        <button (click)="altaRegistro()" class="btn btn-primary colortopacio">
+          {{ "txtAgregar" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>

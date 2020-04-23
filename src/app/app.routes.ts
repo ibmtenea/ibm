@@ -48,15 +48,24 @@
 import { Routes} from '@angular/router';
 
 import { HomeComponent } from './pages/home.component';
-import { RegistroComponent } from './pages/registro/registro.component';
+import { DetalleComponent } from './pages/detalle.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { PersonasPage } from './pages/personas.pages';
+import { AltaComponent } from './pages/alta.component';
+import { HistoricoComponent } from './pages/historico.component';
+import { DetalleHistoricoComponent } from './pages/detallehistorico.component';
+import { DetallePersona } from './pages/detallepersona.component';
+
 
 export const routes: Routes = [
   { path: 'home' , component: HomeComponent, canActivate: [ AuthGuard ] },
+  { path: 'alta' , component: AltaComponent, canActivate: [ AuthGuard ] },
   { path: 'personas' , component: PersonasPage, canActivate: [ AuthGuard ] },
-  { path: 'registro/:id' , component: RegistroComponent, canActivate: [ AuthGuard ] },
+  { path: 'detallepersona/:id_persona' , component: DetallePersona, canActivate: [ AuthGuard ] },
+  { path: 'historico' , component: HistoricoComponent, canActivate: [ AuthGuard ] },
+  { path: 'detallehistorico/:id' , component: DetalleHistoricoComponent, canActivate: [ AuthGuard ] },
+  { path: 'detalle/:id_tarea' , component: DetalleComponent, canActivate: [ AuthGuard ] },
   { path: 'login'   , component: LoginComponent },
   { path: '', pathMatch: 'full', redirectTo: '/login'},
   { path: '**', redirectTo: '/login' }

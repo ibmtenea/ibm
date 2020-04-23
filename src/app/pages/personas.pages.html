@@ -1,1 +1,337 @@
-Hola
+<div class="page-content" id="content">
+    <app-header></app-header>
+    <app-menu></app-menu>
+  
+    <div class="row m-2">
+      <div class="col-md-12 mt-4">
+        <h3>{{ "txtPersonas" | translate }}</h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="['/', 'home']">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              {{ "txtPersonas" | translate }}
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  
+    <div class="row m-2 mt-4">
+      <div class="col-md-8 alturaminima mb-5">
+        <div class="form">
+          <mat-form-field floatPlaceholder="never" color="accent">
+            <input
+              matInput
+              #filter
+              placeholder="{{ 'txtFiltrarRegistros' | translate }}"
+              (keyup)="updateFilter($event)"
+            />
+          </mat-form-field>
+        </div>
+  
+        <ngx-datatable
+          #mydatatable
+          class="material striped"
+          headerHeight="50"
+          [limit]="15"
+          [columnMode]="'force'"
+          footerHeight="50"
+          rowHeight="auto"
+          [rows]="rows"
+        >
+          <ngx-datatable-column name="id_persona" [maxWidth]="90">
+            <ng-template
+              class="mat-column-id"
+              ngx-datatable-cell-template
+              let-rowIndex="rowIndex"
+              let-value="value"
+              let-row="row"
+            >
+              <div class="text-center">{{ row.id_persona }}</div>
+            </ng-template>
+          </ngx-datatable-column>
+  
+          <ngx-datatable-column name="Nombres" [maxWidth]="1810">
+            <ng-template
+              ngx-datatable-cell-template
+              let-rowIndex="rowIndex"
+              let-value="value"
+              let-row="row"
+            >
+              <span
+                title="{{ 'txtDobleclickparaeditar' | translate }}"
+                (dblclick)="editing[rowIndex + '-nombres'] = true"
+                *ngIf="!editing[rowIndex + '-nombres']"
+              >
+                {{ value | slice: 0:90 }}
+              </span>
+              <input
+                required
+                autofocus
+                (keyup.enter)="updateValue($event, 'nombres', rowIndex)"
+                *ngIf="editing[rowIndex + '-nombres']"
+                type="text"
+                class="form-control"
+                [value]="value"
+                [title]="row.id"
+              />
+            </ng-template>
+          </ngx-datatable-column>
+  
+          <ngx-datatable-column name="Telefono" [maxWidth]="120">
+            <ng-template
+              ngx-datatable-cell-template
+              let-rowIndex="rowIndex"
+              let-value="value"
+              let-row="row"
+            >
+              <span
+                title="{{ 'txtDobleclickparaeditar' | translate }}"
+                (dblclick)="editing[rowIndex + '-telefono'] = true"
+                *ngIf="!editing[rowIndex + '-telefono']"
+              >
+           <a href='tel:{{ value }}'>{{ value | slice: 0:90 }}</a> 
+              </span>
+              <input
+                required
+                autofocus
+                (keyup.enter)="updateValue($event, 'telefono', rowIndex)"
+                *ngIf="editing[rowIndex + '-telefono']"
+                type="text"
+                class="form-control"
+                [value]="value"
+                [title]="row.id"
+              />
+            </ng-template>
+          </ngx-datatable-column>
+  
+
+
+
+          <ngx-datatable-column name="Email" [maxWidth]="180">
+            <ng-template
+              ngx-datatable-cell-template
+              let-rowIndex="rowIndex"
+              let-value="value"
+              let-row="row"
+            >
+              <span
+                title="{{ 'txtDobleclickparaeditar' | translate }}"
+                (dblclick)="editing[rowIndex + '-email'] = true"
+                *ngIf="!editing[rowIndex + '-email']"
+              >
+              <a href='mailto:{{ value }}'> {{ value | slice: 0:90 }}</a>
+              </span>
+              <input
+                required
+                autofocus
+                (keyup.enter)="updateValue($event, 'email', rowIndex)"
+                *ngIf="editing[rowIndex + '-email']"
+                type="text"
+                class="form-control"
+                [value]="value"
+                [title]="row.id"
+              />
+            </ng-template>
+          </ngx-datatable-column>
+
+<!-- 
+
+          <ngx-datatable-column name="Registrado" [maxWidth]="1810">
+            <ng-template
+              ngx-datatable-cell-template
+              let-rowIndex="rowIndex"
+              let-value="value"
+              let-row="row"
+            >
+              <span>
+                {{ value | slice: 0:10 }}
+              </span>
+              <input
+                required
+                autofocus
+                (keyup.enter)="updateValue($event, 'registrado', rowIndex)"
+                *ngIf="editing[rowIndex + '-registrado']"
+                type="text"
+                class="form-control"
+                [value]="value"
+                [title]="row.id"
+              />
+            </ng-template>
+          </ngx-datatable-column> -->
+
+
+          <ngx-datatable-column name="Rol" [maxWidth]="80">
+            <ng-template
+              ngx-datatable-cell-template
+              let-rowIndex="rowIndex"
+              let-row="row"
+              let-value="value"
+            >
+                <span
+                  title="{{ 'txtDobleclickparaeditar' | translate }}"
+                  (dblclick)="editing[rowIndex + '-id_rol'] = true"
+                  *ngIf="!editing[rowIndex + '-id_rol']"
+                >
+                  {{ value }}
+                </span>
+                <input type="hidden" #varId [value]="row.id" />
+  
+                <select
+                  class="form-control"
+                  name="id_rol"
+                  *ngIf="editing[rowIndex + '-id_rol']"
+                  (blur)="editing[rowIndex + '-id_rol'] = false"
+                  (change)="updateValue($event, 'id_rol', rowIndex)"
+                  [value]="value"
+                  [title]="row.id"
+                >
+                <option *ngFor="let rol of roles" value={{rol.id_rol}}>
+                    {{rol.rol_name}}
+                  </option>
+        
+                </select>
+             
+            </ng-template>
+          </ngx-datatable-column>
+  
+          <ngx-datatable-column name="ver" [maxWidth]="80">
+            <ng-template
+              class="mat-column-id"
+              ngx-datatable-cell-template
+              let-row="row"
+            >
+              <div class="text-center">
+                <div class="row">
+                  <div class="col-12 p0 m0">
+                    <a
+                      [routerLink]="['/detallepersona', row.id_persona]"
+                      class="btn btn-warning botonsizes mr-1"
+                      ><i class="fa fa-pencil"></i
+                    ></a>
+                    <button
+                      (click)="borrarRegistro(row, i)"
+                      class="btn btn-warning botonsizes"
+                    >
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+      <div class="col-md-4 pt-5">
+       
+        <div class="form-group">
+          <label for="nombres">{{ "txtNombres" | translate }}</label>
+          <input
+            required
+            style="background-color: white;"
+            placeholder="{{ 'txtNombres' | translate }}"
+            class="form-control form-control-sm"
+            [class.is-invalid]="nombres.invalid && nombres.touched"
+            #nombres="ngModel"
+            required
+            minlength="4"
+            name="nombres"
+            type="text"
+            [(ngModel)]="datoregistro.nombres"
+          />
+        </div>
+  
+
+        <div class="form-group">
+            <label for="telefono">{{ "txtTelefono" | translate }}</label>
+            <input
+              style="background-color: white;"
+              placeholder="{{ 'txt9digitos' | translate }}"
+              class="form-control form-control-sm"
+              #telefono="ngModel"
+              minlength="9"
+              name="telefono"
+              type="text"
+              [(ngModel)]="datoregistro.telefono"
+            />
+          </div>
+
+
+          <div class="form-group">
+            <label for="email">{{ "txtEmail" | translate }}</label>
+            <input
+              style="background-color: white;"
+              placeholder="{{ 'txtEmail' | translate }}"
+              class="form-control form-control-sm"
+              [class.is-invalid]="email.invalid && email.touched"
+              #email="ngModel"
+              required
+              [email]="true"
+              name="email"
+              type="email"
+              [(ngModel)]="datoregistro.email"
+            />
+          </div>
+          
+
+          <div class="form-group">
+            <label for="direccion">{{ "txtDireccion" | translate }}</label>
+            <input
+              style="background-color: white;"
+              placeholder="{{ 'txtDireccion' | translate }}"
+              class="form-control form-control-sm"
+              #direccion="ngModel"
+              name="direccion"
+              type="text"
+              [(ngModel)]="datoregistro.direccion"
+            />
+          </div>
+
+
+          <div class="form-group">
+            <label for="password">{{ "txtPassword" | translate }}</label>
+            <input
+              required
+              style="background-color: white;"
+              placeholder="{{ 'txtPassword' | translate }}"
+              class="form-control form-control-sm"
+              [class.is-invalid]="password.invalid && password.touched"
+              #password="ngModel"
+              required
+              name="password"
+              type="password"
+              [(ngModel)]="datoregistro.password"
+            />
+          </div>
+
+        <div class="form-group">
+          <label for="id_rol">{{ "txtRol" | translate }}</label>
+          <select
+            required
+            style="background-color: white;"
+            class="form-control form-control-sm"
+            name="id_rol"
+           
+            [class.is-invalid]="id_rol.invalid && id_rol.touched"
+            #id_rol="ngModel"
+            [(ngModel)]="datoregistro.id_rol"
+          >
+          <option *ngFor="let rol of roles" value={{rol.id_rol}}>
+            {{rol.rol_name}}
+          </option>
+          </select>
+        </div>
+
+        <div class="form-group text-center">
+          <button (click)="altaRegistro()" class="btn btn-primary colortopacio">
+            {{ "txtAgregar" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <app-footer></app-footer>
+  </div>
+  

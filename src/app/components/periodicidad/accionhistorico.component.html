@@ -1,0 +1,227 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<form [formGroup]="accionForm" class="formulario" (ngSubmit)="submitForm()" novalidate>
+<div class="row">
+    <div class="col-md-12">
+      <div class="card bg-default">
+        <h5 class="card-header">
+          Acción puntual
+        </h5>
+        <div class="card-body">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <div class="row">
+          
+            <div class="col-md-7">
+          <div [formGroup]="accionForm">
+          <input type="hidden" class="form-control"  name="id_tarea"  formControlName="id_tarea"  />
+          </div>
+
+          <div [formGroup]="accionForm">
+            <input type="hidden" class="form-control"  name="id_categoria"  formControlName="id_categoria"  />
+          </div>
+
+             <div class="row">
+            <div class="col-md-7"><h5 class="titolpetit">Posición en la semana</h5>
+            <hr class="bdott" />
+              <div class="row mt-3">
+                <div class="col-6  minitext">
+
+
+
+                  <div *ngFor="let dias of diasSemana; let i=index">
+                    <div class="row"><div class="col-8">{{dias.name}}</div><div class="col-4">
+                      <input type="checkbox"  name="dias.name{{dias.value}}" [value]="dias.value" 
+                      checked="{{dias.checked}}"  
+                      (change)="onCheckboxChange($event)"
+                      disabled
+                      />
+                    </div>
+                  </div>
+                  </div>
+
+               
+                </div>
+                <div class="col-6  minitext">
+                  <div *ngFor="let tramos of tramosSemana; let i=index">
+                    <div class="row"><div class="col-8">{{tramos.name}}</div><div class="col-4">
+                      
+                      <input type="checkbox" 
+                      disabled
+                      [value]="tramos.value" checked="{{tramos.checked}}" (change)="onCheckboxChange($event)" />
+                    
+                      
+                    
+                    
+                    </div></div>
+                  </div>
+                </div>
+            </div>      
+            </div>
+            <div class="col-md-5"><h5 class="titolpetit">Posición en el mes</h5>
+              <hr class="bdott" />
+              <div class="row mt-3  minitext">
+                <div class="col-12">
+                  <div *ngFor="let trames of tramosMes; let i=index">
+                    <div class="row"><div class="col-8">{{trames.name}}</div><div class="col-4 text-right">
+                      <input type="checkbox" 
+                      disabled
+                      [value]="trames.value" checked="{{trames.checked}}" (change)="onCheckboxChange($event)" /></div></div>
+                  </div>
+                </div>
+              </div>      
+            </div>
+           </div> 
+
+
+           <div class="row">
+            <div class="col-md-12"><h5 class="titolpetit"></h5>
+              <hr class="bdott" />
+              <div class="row mt-3">
+                <div class="col-12">
+                  <div class="row" [formGroup]="accionForm">
+                    <div class="col-6">
+                      
+                      <label for="dp">Fecha fin</label>
+                      <div class="input-group">
+                        <input
+                          class="form-control"
+                          ngbDatepicker
+                          #d="ngbDatepicker"
+                          name="fechafin"
+                          formControlName="fechafin"
+                          disabled
+                          placeholder =  {{mad.fechafin}} 
+                          readonly
+                        />
+                        <div class="input-group-append">
+                          
+                        </div>
+                      </div>
+                    </div>
+
+
+
+
+                    <div class="col-6" [formGroup]="accionForm"><label for="repeticiones">Número de repeticiones</label> 
+                    
+                      <input type="number" class="form-control"  
+                      name="repeticiones" 
+                      formControlName="repeticiones"  
+                      disabled
+                      />
+                    
+                  
+                    </div>
+
+
+
+
+                  </div>
+                </div>
+              </div>      
+            </div> 
+          </div>
+          </div>
+
+            <div class="col-md-5"><h5 class="titolpetit">Selección de días</h5>
+              <hr class="bdott" />
+              <div class="row mt-3">
+                <div class="col-12 m-0 p-0">
+                  <div class="row mb-3 p-0 text-center">
+                    <!-- <div class="col-12">
+                      <h5 class="titolpetit">{{mesActual | date: 'LLLL'}}</h5>
+                    </div> -->
+                  </div>
+                  <div class="row m-0 p-0 checkbox">
+                      <div class="col-2  text-center p-0 m-0" *ngFor="let diam of diasMes; let i=index">
+
+                          <input type="checkbox" 
+                          [value]="diam.value" name="checkbox{{diam.value}}" id="checkbox{{diam.value}}" 
+                         
+                          checked="{{diam.checked}}"  
+                          (change)="onCheckboxChange($event)"
+                          disabled
+                          />
+                        
+
+                        <label for="checkbox{{diam.value}}">{{diam.name}}</label>
+                      </div>
+                  </div>
+              </div>
+              </div>      
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 text-center"><hr class="bdott" />
+              <!-- <button type="submit" class="btn btn-info mt-3">
+                Guardar periodicidad
+              </button> -->
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </form>
+
+  <script>
+    CKEDITOR.replace("ibmeditor", { 
+    on : {
+      // maximize the editor on startup
+      'instanceReady' : function( evt ) {
+        evt.editor.resize("100%");
+      }
+    }
+  });
+  </script>
+
+
+
+
+
+

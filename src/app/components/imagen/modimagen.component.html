@@ -1,0 +1,42 @@
+          
+  <div class="block" *ngIf="fotopersona.imagen==''">
+    <img 
+    class="nofoto animate fadeIn" 
+    src="./assets/nophoto.jpg" 
+    >
+  </div> 
+
+ 
+   <div class="block" *ngIf="fotopersona.imagen">
+    <img 
+    class="perfildetalle animate fadeIn" 
+    src="./assets/loader.gif" 
+    jpPreload="{{fotopersona.imagen}}">
+  </div>
+  
+
+
+
+
+
+<div class="row">
+  <div class="col-12 text-center mt-4">
+
+
+<form [formGroup]="accionForm" class="formulario" novalidate>
+  <input type="hidden" class="form-control"  name="id_persona"  formControlName="id_persona"  />
+  <label class="fileContainer"><i class="fa fa-camera"></i>
+
+  <input 
+         type="file"
+         name="fotopersona"  
+         formControlName="fotopersona"
+         (change)="handleInputChange($event)"
+         accept="image/*" 
+         
+         />
+
+ </label>
+</form>
+</div>
+</div>
