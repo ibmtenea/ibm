@@ -33,9 +33,14 @@ export class DetalleComponent implements OnInit{
   closeResult = '';
   model: NgbDateStruct;
   registro:Issue = new Issue();
+  dregistroa:Issue = new Issue();
   registropersona:Seguimiento = new Seguimiento();
   public Editor = ClassicEditor;
   dias: { name: string; value: string; checked: boolean; }[];
+  id_categoria: string;
+  periodetalle: any[];
+  categoperiod: any;
+  periodcate: any;
   
   public onReady( editor ) {
       editor.ui.getEditableElement().parentElement.insertBefore(
@@ -59,7 +64,8 @@ export class DetalleComponent implements OnInit{
     datoregistro = {
       id_seguimiento: null,
       id_tarea: this.activatedRoute.snapshot.paramMap.get('id_tarea'),
-      id_persona: null
+      id_persona: null,
+      id_persona_log: localStorage.getItem('id_persona')
     }
   constructor(private httpClient: HttpClient,private registroService: DetalleService,
               private activatedRoute: ActivatedRoute,private router: Router,
@@ -90,7 +96,7 @@ export class DetalleComponent implements OnInit{
       //cargo las categorias para los combos select
       httpClient.get<any[]>(this.PHP_API_SERVER + '/ajax/categorias_read.php').subscribe(result => {
           this.categorias = result;
-        }, error => console.error(error));        
+        }, error => console.error(error));    
       //cargo las personas para los combos select
       httpClient.get<any[]>(this.PHP_API_SERVER + '/ajax/personas_seguimiento_read.php?id_tarea=' + this.datoregistro.id_tarea).subscribe(result => {
         this.personas = result;
@@ -98,12 +104,16 @@ export class DetalleComponent implements OnInit{
      //cargo el listado de personas para esta ID tarea
      httpClient.get<any[]>(this.PHP_API_SERVER + '/ajax/personas_suscritas_seguimiento_read.php?id_tarea=' + this.datoregistro.id_tarea).subscribe(result => {
       this.suscripcion = result;
+      console.log(this.datoregistro.id_tarea);
      }, error => console.error(error));
 
 
 
 
-              }
+
+
+
+  }
 
   ngOnInit(){
     const id_tarea = this.activatedRoute.snapshot.paramMap.get('id_tarea');
@@ -111,7 +121,33 @@ export class DetalleComponent implements OnInit{
       .subscribe( (respuesta:Issue) => {
          this.registro = respuesta;
          this.registro.id_tarea =   id_tarea;
-         console.log(id_tarea);
+         this.registro.id_persona = localStorage.getItem('id_persona');
+
+      
+     //cargo el listado periodicidades de esta tarea para verificar a que categoria pertenecen y mostrar un combo u otro
+     this.httpClient.get<any[]>(this.PHP_API_SERVER + '/ajax/periodicidad_detalle.php?id_tarea=' + this.datoregistro.id_tarea).subscribe(result => {
+      this.periodetalle = result[0];
+     if(undefined == this.periodetalle){
+      this.registro.decidecategoria = '0'; 
+      console.log("esta es la period:");
+     } else {
+      this.periodcate = this.periodetalle['id_categoria'];
+      this.registro.decidecategoria = this.periodcate; 
+      console.log("esta es la period:" ,this.periodcate);
+     }   
+    }, error => console.error(error));
+
+
+
+
+
+
+
+
+
+
+
+
       });
 
   }
@@ -165,7 +201,7 @@ export class DetalleComponent implements OnInit{
             title: this.registro.tarea,
             text: 'Registro modificado',
             icon: 'success',  
-            showConfirmButton : false
+            showConfirmButton : true
           }),this.recarga();  
          
         });

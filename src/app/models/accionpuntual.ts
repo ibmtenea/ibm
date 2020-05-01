@@ -10,4 +10,5 @@ export class ModeloAccionPuntual {
   value: string;
   id_tarea: string;
   checked: string;
+  id_persona: string;
 }

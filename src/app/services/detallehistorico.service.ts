@@ -16,7 +16,6 @@ import { Seguimiento } from '../models/seguimiento';
 
 export class DetalleHistoricoService {
 
-    private personas:Issue[] = [];
      //persons:any[] = [];
  
         //definimos la url del servicio
@@ -35,8 +34,8 @@ export class DetalleHistoricoService {
 
 
         //obtener persona por id
-        getPerson( id:string ){
-            return this.http.get(`${ this.url}/registro_detalle.php?id=${ id }`);
+        getDetalleHistorico( id_log:string ){
+            return this.http.get(`${ this.url}/registro_historico_detalle.php?id_log=${ id_log }`);
         }
 
 

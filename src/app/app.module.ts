@@ -13,7 +13,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { DataService } from './services/data.service';
-
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LoginComponent } from './pages/login/login.component';
@@ -30,7 +30,7 @@ import { PersonasPage } from './pages/personas.pages';
 
 import { DescargaPage } from './pages/descarga.pages';
 import { ConfiguracionPage } from './pages/configuracion.pages';
-import { PerfilPage } from './pages/perfil.pages';
+
 import { DetalleComponent } from './pages/detalle.component';
 
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -60,6 +60,11 @@ import { ModimagenComponent } from './components/imagen/modimagen.component';
 import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
 import {JpImagePreloadModule} from '@jaspero/ng-image-preload';
+import { PerfilPersona } from './pages/perfil.component';
+import { AyudaComponent } from './components/ayuda/ayuda.component';
+import { ElegirTurno } from './pages/turnos/elegir.component';
+import { FlotanteComponent } from './components/flotante/flotante.component';
+
 
 
 registerLocaleData(localeEs, 'es');
@@ -77,6 +82,7 @@ CheckComponent,
     HomeComponent,
     DetalleComponent,
     LoginComponent,
+    FlotanteComponent,
     DetalleHistoricoComponent,
   AccionComponent,
   ModimagenComponent,
@@ -89,10 +95,11 @@ CheckComponent,
 HistoricoComponent,
     DescargaPage,
     ConfiguracionPage,
-    PerfilPage,
+    ElegirTurno,
     AltaComponent,
-    DetallePersona
-    
+    DetallePersona,
+    PerfilPersona,
+AyudaComponent
     
 
  
@@ -101,6 +108,7 @@ HistoricoComponent,
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    DragDropModule,
     MatDialogModule,
     MatButtonModule,
     MatInputModule,

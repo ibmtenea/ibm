@@ -2,17 +2,36 @@
 <div class="vertical-nav bg-white" id="sidebar">
   <div class="py-4 px-3 mb-4 bg-light">
     <div class="media d-flex align-items-center">
-      <img
-        src="https://www.travelcontinuously.com/wp-content/uploads/2018/04/empty-avatar.png"
-        alt="..."
-        width="65"
+
+
+
+
+      <div  *ngIf="user.imagen==null ">
+        <img 
+        src="./assets/nophoto.jpg" 
+        width="75"
         class="mr-3 rounded-circle img-thumbnail shadow-sm"
-      />
-      <div class="media-body">
-        <h5 class="minnom m-0">José maría TorreAguirre González</h5>
-        <p class="font-weight-light roledef mb-0"><em>Rol Mainframe</em></p>
+        >
+      </div> 
+    
+     
+       <div  *ngIf="user.imagen">
+        <img 
+        width="75"
+        class="mr-3 rounded-circle img-thumbnail shadow-sm"
+        src="./assets/loader.gif" 
+        jpPreload="{{user.imagen}}">
+      </div>
+
+
+
+      <div class="media-body" >
+        <h5 class="minnom m-0">{{ user.nombres }}</h5>
+        <p class="font-weight-light roledef mt-2 mb-2">
+          <em>{{ user.nombre_rol }}{{ user.level_rol }}</em>
+        </p>
         
-        <a [routerLink]="['/', 'perfil']" class="text-light">
+        <a [routerLink]="['/', 'perfil', '1']" class="text-light">
           <i class="fa fa-user mr-1  fa-1g"></i> <small>{{ "txtProfile" | translate }}</small>
         </a>
       </div>
@@ -28,12 +47,25 @@
   </p>
 
   <ul class="nav flex-column bg-white mb-0">
+
     <li class="nav-item" routerLinkActive="active">
-      <a [routerLink]="['/', 'home']" class="nav-link  ">
+      <a [routerLink]="['/', 'elegirturno']" class="nav-link  ">
         <i class="fa fa-home mr-3  fa-fw"></i>
-        {{ "txtHome" | translate }}
+        Turnos
       </a>
     </li>
+
+
+    <!-- <ng-container *ngIf="show"> -->
+    <li class="nav-item" routerLinkActive="active" >
+      <a [routerLink]="['/', 'home']" class="nav-link  ">
+        <i class="fa fa-home mr-3  fa-fw"></i>
+        Tareas 
+      </a>
+    </li>
+  <!-- </ng-container> -->
+
+
     <li class="nav-item" routerLinkActive="active">
       <a [routerLink]="['/', 'personas']" class="nav-link ">
         <i class="fa fa-users mr-3  fa-fw"></i>
@@ -54,10 +86,12 @@
     </li>
   </ul>
   <hr />
+
+
+<ng-container *ngIf="user.level_rol === '8'"> 
   <p class="text-gray font-weight-bold text-uppercase px-3 small mt-2  pb-4 mb-0">
    {{ "txtRolAdministrador" | translate }}
   </p>
-
   <ul class="nav flex-column bg-white mb-0">
     <li class="nav-item" routerLinkActive="active">
       <a [routerLink]="['/', 'configuracion']" class="nav-link ">
@@ -66,5 +100,8 @@
       </a>
     </li>
   </ul>
+</ng-container>
+
+
 </div>
 <!-- End vertical navbar -->

@@ -22,6 +22,7 @@ import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Personas } from '../models/personas';
 import { Seguimiento } from '../models/seguimiento';
 import { DetalleHistoricoService } from '../services/detallehistorico.service';
+import { IssueHistorico } from '../models/issuehistorico';
 @Component({
   selector: 'app-detallehistorico',
   templateUrl: './detallehistorico.component.html'
@@ -33,7 +34,7 @@ import { DetalleHistoricoService } from '../services/detallehistorico.service';
 export class DetalleHistoricoComponent implements OnInit{
   closeResult = '';
   model: NgbDateStruct;
-  registro:Issue = new Issue();
+  registro:IssueHistorico = new IssueHistorico();
   registropersona:Seguimiento = new Seguimiento();
   public Editor = ClassicEditor;
   dias: { name: string; value: string; checked: boolean; }[];
@@ -67,14 +68,6 @@ export class DetalleHistoricoComponent implements OnInit{
               private modalService: NgbModal){
 
 
-                this.dias = [
-                  {name:'OptionA', value:'first_opt', checked:true},
-                  {name:'OptionB', value:'second_opt', checked:false},
-                  {name:'OptionC', value:'third_opt', checked:true}
-                 ];
- 
-
-                
 
         //cargo los roles para los combos select
         httpClient.get<any[]>(this.PHP_API_SERVER + '/ajax/roles_read.php').subscribe(result => {
@@ -107,12 +100,12 @@ export class DetalleHistoricoComponent implements OnInit{
               }
 
   ngOnInit(){
-    const id_tarea = this.activatedRoute.snapshot.paramMap.get('id_tarea');
-    this.registroService.getPerson ( id_tarea )
-      .subscribe( (respuesta:Issue) => {
+    const id_log = this.activatedRoute.snapshot.paramMap.get('id_log');
+    this.registroService.getDetalleHistorico ( id_log )
+      .subscribe( (respuesta:IssueHistorico) => {
          this.registro = respuesta;
-         this.registro.id_tarea =   id_tarea;
-         console.log(this.registro.fechamodi);
+         this.registro.id_log =   id_log;
+    
       });
 
   }

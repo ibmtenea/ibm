@@ -34,9 +34,12 @@ export class PersonasPage {
     direccion: null,
     id_rol: null,
     password:  null,
-    imagen:  null
+    imagen:  null,
+    id_persona_log: localStorage.getItem('id_persona')
   }
-
+  emailvalida = {
+    mailexiste: null
+  }
   @ViewChild(DatatableComponent, { static: false }) table: DatatableComponent;
   ColumnMode = ColumnMode;
   campo: any;
@@ -45,6 +48,7 @@ export class PersonasPage {
   ever: any;
   datos: string;
   datosborrado: string;
+
 
   
   constructor(private httpClient: HttpClient, private apiService: ApiPersonas) {
@@ -92,14 +96,27 @@ export class PersonasPage {
   //alta de registro
   altaRegistro() {
 
-    //si los campos obligatorios nos llegan vacios
-    if(this.datoregistro.nombres==null || this.datoregistro.email==null || this.datoregistro.id_rol==null || this.datoregistro.password==null){
-      Swal.fire({
-        title: 'Revise los datos',
-        text: 'Los campos obligatorios no pueden estar vacíos!!',
-        icon: 'error',
-      });   
-    } else {
+    //compruebo que el email no exista (ya se valida también en el servidor en PHP)
+    this.apiService.validaEmail(this.datoregistro.email).subscribe(
+      (datosMail:any) => {
+        this.emailvalida = datosMail;  
+        if(this.emailvalida.mailexiste==true) {
+              Swal.fire({
+                title: this.datoregistro.email,
+                text: 'El e-mail indicado ya existe, escoja otro',
+                icon: 'error',  
+                showConfirmButton : true
+              });  
+        }
+        //si los campos obligatorios nos llegan vacios
+        else if(this.datoregistro.nombres==null || this.datoregistro.email==null || this.datoregistro.id_rol==null || this.datoregistro.password==null){
+          Swal.fire({
+            title: 'Revise los datos',
+            text: 'Los campos obligatorios no pueden estar vacíos!!',
+            icon: 'error',
+          });   
+        } else {
+
       //enviamos el array a la funcions del server
       this.apiService.altaRegistro(this.datoregistro).subscribe(
         datos => {
@@ -108,9 +125,10 @@ export class PersonasPage {
             text: 'Registro añadido',
             icon: 'success',  
             showConfirmButton : false
-          }),this.recarga();      
+          }),this.recarga(); 
         });
-    }
+       }
+   });
   }
 
   //actualización campos inline
@@ -186,7 +204,7 @@ export class PersonasPage {
 
    //eliminar registro      
    borrarRegistro ( registro: Personas, i:string){
-
+    
     Swal.fire({
         title: `¿Desea borrar el registro ${registro.nombres}`,
         text: 'Confirme si desea borrar el registro',
@@ -195,8 +213,10 @@ export class PersonasPage {
         showCancelButton: true
 
     }).then( respuesta => {
+         
         if ( respuesta.value ) {
-            this.datosborrado = JSON.stringify({ "nombres": registro.nombres, "id_persona": registro.id_persona });
+            const id_persona_log = localStorage.getItem('id_persona');
+            this.datosborrado = JSON.stringify({ "id_persona_log": id_persona_log,"nombres": registro.nombres, "id_persona": registro.id_persona });
             this.apiService.delete( this.datosborrado ).subscribe();
 
             Swal.fire({

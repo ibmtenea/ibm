@@ -50,22 +50,29 @@ import { Routes} from '@angular/router';
 import { HomeComponent } from './pages/home.component';
 import { DetalleComponent } from './pages/detalle.component';
 import { LoginComponent } from './pages/login/login.component';
-import { AuthGuard } from './guards/auth.guard';
+
 import { PersonasPage } from './pages/personas.pages';
 import { AltaComponent } from './pages/alta.component';
 import { HistoricoComponent } from './pages/historico.component';
 import { DetalleHistoricoComponent } from './pages/detallehistorico.component';
 import { DetallePersona } from './pages/detallepersona.component';
-
+import { AuthguardGuard } from './guards/authguard.guard';
+import { PerfilPersona } from './pages/perfil.component';
+import { HeaderComponent } from './components/header/header.component';
+import { AyudaComponent } from './components/ayuda/ayuda.component';
+import { ElegirTurno } from './pages/turnos/elegir.component';
 
 export const routes: Routes = [
-  { path: 'home' , component: HomeComponent, canActivate: [ AuthGuard ] },
-  { path: 'alta' , component: AltaComponent, canActivate: [ AuthGuard ] },
-  { path: 'personas' , component: PersonasPage, canActivate: [ AuthGuard ] },
-  { path: 'detallepersona/:id_persona' , component: DetallePersona, canActivate: [ AuthGuard ] },
-  { path: 'historico' , component: HistoricoComponent, canActivate: [ AuthGuard ] },
-  { path: 'detallehistorico/:id' , component: DetalleHistoricoComponent, canActivate: [ AuthGuard ] },
-  { path: 'detalle/:id_tarea' , component: DetalleComponent, canActivate: [ AuthGuard ] },
+  { path: 'ayuda' , component: AyudaComponent, canActivate: [ AuthguardGuard ] },
+  { path: 'elegirturno' , component: ElegirTurno, canActivate: [ AuthguardGuard ] },
+  { path: 'home' , component: HomeComponent, canActivate: [ AuthguardGuard ] },
+  { path: 'alta' , component: AltaComponent, canActivate: [ AuthguardGuard ] },
+  { path: 'personas' , component: PersonasPage, canActivate: [ AuthguardGuard ] },
+  { path: 'perfil/:id_persona' , component: PerfilPersona, canActivate: [ AuthguardGuard ] },
+  { path: 'detallepersona/:id_persona' , component: DetallePersona, canActivate: [ AuthguardGuard ] },
+  { path: 'historico' , component: HistoricoComponent, canActivate: [ AuthguardGuard ] },
+  { path: 'detallehistorico/:id_log' , component: DetalleHistoricoComponent, canActivate: [ AuthguardGuard ] },
+  { path: 'detalle/:id_tarea' , component: DetalleComponent, canActivate: [ AuthguardGuard ]},
   { path: 'login'   , component: LoginComponent },
   { path: '', pathMatch: 'full', redirectTo: '/login'},
   { path: '**', redirectTo: '/login' }

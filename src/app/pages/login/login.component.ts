@@ -1,60 +1,66 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { UsuarioModel } from '../../models/usuario.model';
-import { AuthService } from '../../services/auth.service';
-import Swal from 'sweetalert2';
+import { FormGroup, FormBuilder, Validators, NgForm, NgModel } from '@angular/forms';
+import { first } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { DataserviceService } from '../../services/dataservice.service';
+import Swal from 'sweetalert2';
 
+ 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
-  usuario: UsuarioModel = new UsuarioModel();
-  recordarme= false;
-
-  constructor( private auth: AuthService, private router: Router) { }
-
+  angForm: FormGroup;
+  datosphp: string;
+  constructor(private fb: FormBuilder,private dataService: DataserviceService,private router:Router) {
+    this.angForm = this.fb.group({
+ 
+      email: ['', [Validators.required,Validators.minLength(1), Validators.email]],
+      password: ['', Validators.required]
+ 
+    });
+   }
+ 
   ngOnInit() {
-    if ( localStorage.getItem('email') ){
-      this.usuario.email = localStorage.getItem('email');
-      this.recordarme = true;
-      }
+
   }
 
+  postdata(angForm:FormGroup)
+  {
 
-  login(form:NgForm){
-       if( form.invalid ){ return; }
+   
 
-        //alerts de sweet al efectuar el submit
-        Swal.fire({
-          allowOutsideClick: false,
-          icon: 'info',
-          text: 'espere, por favor'
-        });
-        Swal.showLoading();
-        this.auth.login( this.usuario) .subscribe ( respuesta => {
-          //accedemos con exito
-          Swal.close();
-          console.log(respuesta);
-          //recordamos usuario si esta marcado el check
-          if ( this.recordarme ){
-            localStorage.setItem('email', this.usuario.email);
-          }
-          //redireccionamos
-          this.router.navigateByUrl('/home');
-        }, (err) => {
-          console.log(err.error.error.message);
-          //han habido errores de autenticacion
-          Swal.fire({
-            allowOutsideClick: false,
-            icon: 'error',
-            title: 'Error al autentificar',
-            text: err.error.error.message
-          });
-        });
+    var patronEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+    var emailResult = patronEmail.test(angForm.value.email);
+        if(emailResult==false){
+              Swal.fire({
+                text: 'El campo E-mail debe cumplir con el formato adecuado',
+                icon: 'error',  
+                showConfirmButton : true
+              });
+        } else {
+
+
+            // this.datosphp = JSON.stringify({ "email": angForm.value.email, "password": angForm.value.password });
+            this.dataService.userlogin(angForm.value.email,angForm.value.password)
+              .pipe(first())
+              .subscribe(
+                  data => {
+                        const redirect = this.dataService.redirectUrl ? this.dataService.redirectUrl : '/elegirturno';
+                        this.router.navigate([redirect]);
+                  },
+                  error => {
+                    Swal.fire({
+                      text: 'El campo E-mail o el password son erróneos. revise los datos.',
+                      icon: 'error',  
+                      showConfirmButton : true
+                    });
+                  });
+        }
+
   }
-
+  get email() { return this.angForm.get('email'); }
+  get password() { return this.angForm.get('password'); }
 }

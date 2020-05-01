@@ -7,6 +7,7 @@ import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import Swal from 'sweetalert2';
 import { Constantes } from '../models/constantes.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-app',
@@ -41,17 +42,30 @@ export class HomeComponent {
   ColumnMode = ColumnMode;
   campo: any;
   id_tarea: any;
+  id_persona: any;
   valor: any;
   ever: any;
   datos: string;
   datosborrado: string;
-  
-  constructor(private httpClient: HttpClient, private apiService: ApiService) {
+
+
+  my_messages = {
+    'emptyMessage': '',
+    'totalMessage': ''
+  };
+ 
+ 
+  constructor(private translate: TranslateService,private httpClient: HttpClient, private apiService: ApiService) {
         this.fetch(data => {
           // cache
             this.temp = [...data];
             this.rows = data;
         });
+
+        translate.get('Total', {value: 'eeeeeeeeee'})
+        .subscribe((res: string) => this.my_messages.totalMessage = res);
+        translate.get('No hay resultados para mostrar', {value: ''})
+        .subscribe((res: string) => this.my_messages.emptyMessage = res);
 
 
   }
@@ -61,6 +75,7 @@ export class HomeComponent {
     this.fetch(data => {
         this.temp = [...data];
         this.rows = data;
+      
       });
   }
 
@@ -69,21 +84,36 @@ export class HomeComponent {
       location.reload();
   }
 
+
+
+
+
+
   //cargamos el listado
   fetch(cb) {
     if(cb){
+      const id_persona = localStorage.getItem('id_persona');
+      const valorTurno = localStorage.getItem('valorTurno');
       const req = new XMLHttpRequest();
-      req.open('GET', `${this.PHP_API_SERVER}/ajax/registro_read.php`);
+      req.open('GET', `${this.PHP_API_SERVER}/ajax/registro_read.php?id_persona=${id_persona}&valorturno=${valorTurno}`);
       req.onload = () => {
         cb(JSON.parse(req.response));
+
       };
       req.send();
     }
   }
 
+
+
+
+
+
+
+
+
   //alta de registro
   altaRegistro() {
-
     //si los campos obligatorios nos llegan vacios
     if(this.datoregistro.tarea==null || this.datoregistro.hora==null || this.datoregistro.estatus==null){
       Swal.fire({
@@ -112,10 +142,11 @@ export class HomeComponent {
     this.rows = [...this.rows];
     this.campo = cell;
     this.id_tarea = event.target.title;
+    const id_persona = localStorage.getItem('id_persona');
     this.valor = event.target.value;
-    this.ever = this.campo,this.id_tarea,this.valor;
-    this.datos = JSON.stringify({ "campo": this.campo, "id_tarea": this.id_tarea, "valor": this.valor });
-
+    this.ever = id_persona,this.campo,this.id_tarea,this.valor;
+    this.datos = JSON.stringify({ "id_persona": id_persona,"campo": this.campo, "id_tarea": this.id_tarea, "valor": this.valor });
+    
     //validacion del formato de la hora
     var patronHora = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
     var horaResult = patronHora.test(this.valor);
@@ -177,7 +208,8 @@ export class HomeComponent {
 
     }).then( respuesta => {
         if ( respuesta.value ) {
-            this.datosborrado = JSON.stringify({ "tarea": registro.tarea, "id_tarea": registro.id_tarea });
+            const id_persona = localStorage.getItem('id_persona');
+            this.datosborrado = JSON.stringify({ "id_persona": id_persona, "id_tarea": registro.id_tarea });
             this.apiService.delete( this.datosborrado ).subscribe();
 
             Swal.fire({
@@ -185,7 +217,7 @@ export class HomeComponent {
               text: 'Registro eliminado',
               icon: 'success',  
               showConfirmButton : false
-            }),this.recarga();  
+            }) ,this.recarga();  
 
         }
       });

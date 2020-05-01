@@ -18,7 +18,7 @@ export class ApiService {
   }
 
   modiRegistro(datos){
-    console.log(datos);
+   
     return this.httpClient.post(`${this.PHP_API_SERVER}/ajax/registro_update.php`, datos);   
   
   }

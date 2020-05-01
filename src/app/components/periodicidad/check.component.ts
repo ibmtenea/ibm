@@ -18,6 +18,7 @@ import { NoopScrollStrategy } from '@angular/cdk/overlay';
   selector: 'app-check',
   templateUrl: './check.component.html'
 })
+
 export class CheckComponent implements OnInit {
 
 
@@ -27,33 +28,35 @@ export class CheckComponent implements OnInit {
 
   datoregistro = {
     id_seguimiento: null,
-    id_tarea: this.activatedRoute.snapshot.paramMap.get('id'),
+    id_tarea: this.activatedRoute.snapshot.paramMap.get('id_tarea'),
     id_persona: null
   }
-  madre: any;
+  madre: PeriodicidadMadre;
 
-  
+  mad:PeriodicidadMadre = new PeriodicidadMadre();
+
   mesActual: number = Date.now();
   PHP_API_SERVER = Constantes.API_SERVER; //URL del servicio
   diasMes: DiasMes[] = [];
   tramosSemana: TramosSemana[] = [];
   tramosMes: TramosMes[] = [];
   diasSemana: TramosDias[] = [];
-  mad:PeriodicidadMadre = new PeriodicidadMadre();
 
   datosRecibidos: string;
   dias: any;
-  accionForm: FormGroup;
+  accionFormCheck: FormGroup;
 
   selectedHobbiesNames: [string];
 
   mesVigente = new Date().getMonth() + 1;
   datosborrado: string;
+  repeticiones: PeriodicidadMadre;
+  fechafin: any;
 
   constructor(private fb: FormBuilder, private activatedRoute: ActivatedRoute, private httpClient: HttpClient, private perioService: PeriodicidadService) {
 
     //cargo los dias del mes en curso
-    httpClient.get<any[]>(this.PHP_API_SERVER + '/ajax/read_dias_mes_actual.php').subscribe(result => {
+    httpClient.get<any[]>(this.PHP_API_SERVER + '/ajax/read_dias_mes_actual.php?id_tarea=' + this.datoregistro.id_tarea).subscribe(result => {
       this.diasMes = result;
     }, error => console.error(error));
 
@@ -77,16 +80,20 @@ export class CheckComponent implements OnInit {
       this.periodicidades = result;
     }, error => console.error(error));
 
-  
+
+
+
+
 
     //modificar valores por defecto en la pagina de insercion TODO
-    this.accionForm = this.fb.group({
+    this.accionFormCheck = this.fb.group({
       checkArrayt: this.fb.array([]),
       fechafin: new FormControl(''),
     //   repeticiones: new FormControl(this.madre),
       repeticiones: ['', Validators.required],
-      id_tarea: this.activatedRoute.snapshot.paramMap.get('id'),
-      id_categoria: '1' //id de accion puntual
+      id_tarea: this.activatedRoute.snapshot.paramMap.get('id_tarea'),
+      id_categoria: '1', //id de accion puntual
+      id_persona: localStorage.getItem('id_persona')
     });
 
 
@@ -102,46 +109,26 @@ export class CheckComponent implements OnInit {
 
  this.cargaMadre();
 
-
   }
-
 
 
   cargaMadre(){
-    const id_tarea = this.activatedRoute.snapshot.paramMap.get('id')
+
+
+    const id_tarea = this.activatedRoute.snapshot.paramMap.get('id_tarea');
+
     this.perioService.getDatosMadre(id_tarea).subscribe( (respuesta: PeriodicidadMadre) => {
     this.madre = respuesta;
-    this.mad = respuesta[0];
-    this.accionForm.controls['fechafin'].setValue(this.madre[0]['fechafin']);
-    this.accionForm.controls['repeticiones'].setValue(this.madre[0]['repeticiones']);
-    console.log(this.mad.fechafin);
+    this.mad = respuesta;
+
     });
+
   }
 
 
 
 
-  //   this.perioService.getDatosMadre (this.datoregistro.id_tarea)
-  //     .subscribe( (
-  //       respuesta:PeriodicidadMadre) => {
-  //        this.madre = respuesta;
-  //        console.log(this.madre);
-  //     });
-
-
-  // }
-
-
-
-
-
-
-
-
-
-
-
-  //eliminar registro      
+  //eliminar registro
   borrarRegistro(identificacion) {
     this.datosborrado = JSON.stringify({ "tarea": this.datoregistro.id_tarea, "id_value": identificacion });
     this.perioService.delete(this.datosborrado).subscribe();
@@ -149,7 +136,7 @@ export class CheckComponent implements OnInit {
   }
 
   onCheckboxChange(e) {
-    const checkArrayt: FormArray = this.accionForm.get('checkArrayt') as FormArray;
+    const checkArrayt: FormArray = this.accionFormCheck.get('checkArrayt') as FormArray;
     if (e.target.checked) {
       checkArrayt.push(new FormControl(e.target.value));
     } else {
@@ -173,11 +160,11 @@ export class CheckComponent implements OnInit {
 
   submitForm() {
     const valormes = this.mesVigente;
-    // const fechafin: FormControl = this.accionForm.get('fechafin') as FormControl;
-    // const repeticiones: FormControl = this.accionForm.get('repeticiones') as FormControl;
-    const id_tarea: FormControl = this.accionForm.get('id_tarea') as FormControl;
+    // const fechafin: FormControl = this.accionFormCheck.get('fechafin') as FormControl;
+    // const repeticiones: FormControl = this.accionFormCheck.get('repeticiones') as FormControl;
+    const id_tarea: FormControl = this.accionFormCheck.get('id_tarea') as FormControl;
 
-    this.perioService.altaRegistrochecks(this.accionForm.value).subscribe();
+    this.perioService.altaRegistrochecks(this.accionFormCheck.value).subscribe();
     Swal.fire({
       text: 'Periodicidad actualizada',
       icon: 'success',

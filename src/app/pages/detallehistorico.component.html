@@ -4,14 +4,14 @@
 
   <div class="row m-2">
     <div class="col-md-12 mt-4 tituloseccion">
-      <h3>{{ "txtRegistros" | translate }}</h3>
+      <h3>Histórico de Logs</h3>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
             <a [routerLink]="['/', 'home']">Home</a>
           </li>
           <li class="breadcrumb-item active" aria-current="page">
-            {{ registro.tarea }} - #{{ registro.id_tarea }}
+            {{ registro.tarea }} - #{{ registro.id_log }}
           </li>
         </ol>
       </nav>
@@ -26,13 +26,8 @@
           <em class="text-muted">{{
             registro.fecha | date: "dd/MM/y HH:mm"
           }}</em>
-          | {{ "txtUltimaModificacion" | translate }}:
-          <em class="text-muted" *ngIf="registro.fechamodi == null"
-            >nunca modificado</em
-          >
-          <em class="text-muted">{{
-            registro.fechamodi | date: "dd/MM/y HH:mm"
-          }}</em>
+          
+         
         </div>
       </div>
     </div>
@@ -42,9 +37,9 @@
         <input
           type="hidden"
           class="form-control"
-          name="id"
+          name="id_log"
           readonly
-          [(ngModel)]="registro.id_tarea"
+          [(ngModel)]="registro.id_log"
         />
 
         <div class="row">
@@ -70,155 +65,66 @@
         <div class="row">
           <div class="col-md-4">
             <div class="form-group">
-              <label for="hora">
-                {{ "txtHora" | translate }}
+              <label for="nombres">
+                Usuario
               </label>
               <input
-                name="hora"
+                name="nombres"
                 required
-                id="reloj"
+              
                 style="background-color: white;"
-                placeholder="00:00"
-                class="form-control form-control-sm hora"
-                [class.is-invalid]="hora.invalid && hora.touched"
-                #hora="ngModel"
-                pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
-                minlength="5"
-                maxlength="5"
+        
+                class="form-control form-control-sm"
+              
+                #nombres="ngModel"
+    
                 type="text"
-                [(ngModel)]="registro.hora"
-             
+                [(ngModel)]="registro.nombres"
+             readonly
                 disabled
               />
-
-              <ngx-material-timepicker
-                #fullTime
-                [minutesGap]="30"
-              ></ngx-material-timepicker>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label for="estatus">
-                {{ "txtStatus" | translate }}
+              <label for="id_persona">
+                Usuario creado
               </label>
-
-              <select 
-              disabled
+              <input
+                name="id_persona"
+                required
+              
+                style="background-color: white;"
+        
                 class="form-control form-control-sm"
-                name="estatus"
-                [class.is-invalid]="estatus.invalid && estatus.touched"
-                #estatus="ngModel"
-                [(ngModel)]="registro.estatus"
-                ><option value="{{ registro.estatus }}" selected>{{
-                  registro.estatus
-                }}</option>
-                <option value="OK">OK</option>
-                <option value="KO">KO</option>
-                <option value="OK-INC">OK-INC</option>
-                <option value="PENDIENTE">PENDIENTE</option>
-              </select>
+              
+                #id_persona="ngModel"
+    
+                type="text"
+                [(ngModel)]="registro.id_persona"
+             readonly
+                disabled
+              />
             </div>
           </div>
           <div class="col-md-4">
-            <div class="form-group">
-              <label for="id_categoria">Categoría </label>
-              <select 
-                required
-                style="background-color: white;"
-                class="form-control form-control-sm"
-                name="id_categoria"
-                
-                #id_categoria="ngModel"
-                [(ngModel)]="registro.id_categoria"
-                
-                disabled
-              >
-                <option
-                  *ngFor="let categoria of categorias"
-                  value="{{ categoria.id_categoria }}"
-                >
-                  {{ categoria.categoria_name }}
-                </option>
-              </select>
-            </div>
+       
           </div>
         </div>
-<!--acciones variables-->
+
         <div class="row">
           <div class="col-md-12 mb-3" >
-            <!--accion puntual-->
-            <div *ngIf="registro.id_categoria === '3'">
-               <app-accionhistorico></app-accionhistorico> 
-            </div>
-            <!--/end accion puntual-->
-            <!--check-->
-            <div *ngIf="registro.id_categoria === '1'">
-              <app-check></app-check>
-            </div>
-            <!--end check-->
+ 
           </div>  
         </div>
-<!--/end acciones variables-->
+
         <div class="row">
-          <div class="col-4">
-            <label for="prioridad">Prioridad</label>
-            <select disabled
-              required
-              style="background-color: white;"
-              class="form-control form-control-sm"
-              name="prioridad"
-              placeholder="Seleccione prioridad"
-              #prioridad="ngModel"
-              [(ngModel)]="registro.prioridad"
-            >
-              <option [ngValue]="null" selected>Seleccione prioridad</option>
-              <option value="alta">Alta</option>
-              <option value="media">Media</option>
-              <option value="baja">Baja</option>
-            </select>
-          </div>
+          <div class="col-4"></div>
           <div class="col-4"></div>
           <div class="col-4"></div>
         </div>
 
-        <div class="row">
-          <div class="col-12 mt-3 mb-3">
-            <hr />
-
-            <div class="row">
-              <div class="col-10 mt-2 mb-2 pt3 pb3">
-                <h5 class="titolpetit">
-                  Personas que participan en el seguimiento
-                </h5>
-              </div>
-              <div class="col-2 mt-2 mb-2 text-right">
-              
-              </div>
-            </div>
-
-            <div class="row">
-              <div
-                class="col-12 mt-1 mb-1 pb1 pt1"
-                *ngFor="let suscripcio of suscripcion"
-              >
-                <div class="row">
-                  <div class="col-4">
-                    {{ suscripcio.id_seguimiento }} - {{ suscripcio.nombres }}
-                  </div>
-                  <div class="col-4">{{ suscripcio.email }}</div>
-                  <div class="col-2">{{ suscripcio.rol_name }}</div>
-                  <div class="col-2 text-right">
-                   
-                  </div>
-                </div>
-
-                <hr class="bdott" />
-              </div>
-            </div>
-          </div>
-        </div>
-
+  
         <div class="row">
           <div class="col-12">
             <div class="form-group text-center">
@@ -237,19 +143,15 @@
           <label for="observaciones">{{
             "txtObservaciones" | translate
           }}</label>
-          <ckeditor
-          [config]="{ toolbar: [ 'link', '|', 'bold', 'italic' ] }"
-            (ready)="onReady($event)"
-            id="ibmeditor"
-            placeholder="Observaciones"
-            #observaciones="ngModel"
-            maxlength="2000"
+          <textarea
+            #descripcion="ngModel"
+    class="form-control"
+    rows="10"
             name="observaciones"
-            [(ngModel)]="registro.observaciones"
-            [editor]="Editor"
-            data=""
+            [(ngModel)]="registro.descripcion"
+
             disabled
-          ></ckeditor>
+          ></textarea>
         </div>
       </div>
     </div>

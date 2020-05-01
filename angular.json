@@ -28,6 +28,7 @@
               "node_modules/fullcalendar-scheduler/dist/scheduler.min.css"
             ],
             "scripts": [
+              "./node_modules/pusher-js/dist/web/pusher.min.js",
               "./node_modules/fullcalendar/dist/fullcalendar.min.js",
               "./node_modules/fullcalendar-scheduler/dist/scheduler.min.js"
             ]

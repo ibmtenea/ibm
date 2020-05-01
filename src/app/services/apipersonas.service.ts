@@ -25,14 +25,18 @@ export class ApiPersonas {
     return this.httpClient.get(`${ this.PHP_API_SERVER}/ajax/personas_detalle.php?id_persona=${ id_persona }`);
   }
 
+  validaEmail( email ){
+    
+    return this.httpClient.get(`${ this.PHP_API_SERVER}/ajax/personas_validar_email.php?email=${ email }`);
+  }
+
+
   altaRegistroFoto(datosFoto) {
-    console.log(datosFoto);
     return this.httpClient.post(`${this.PHP_API_SERVER}/ajax/personas_update_foto.php`, datosFoto);
   } 
 
 
   altaRegistro(datoregistro) {
-      console.log(JSON.stringify(datoregistro));
       return this.httpClient.post(`${this.PHP_API_SERVER}/ajax/personas_crear.php`, JSON.stringify(datoregistro));
   }
 

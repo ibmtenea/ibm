@@ -47,6 +47,15 @@
           [(ngModel)]="registro.id_tarea"
         />
 
+
+        <input
+        #id_persona="ngModel"
+        name="id_persona"
+        type="hidden"
+        [(ngModel)]="registro.id_persona"
+      />
+
+
         <div class="row">
           <div class="col-12">
             <div class="form-group">
@@ -122,39 +131,57 @@
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label for="id_categoria">Categoría </label>
+              <label for="id_categoria">Categoría</label>
               <select
                 required
                 style="background-color: white;"
                 class="form-control form-control-sm"
                 name="id_categoria"
-                placeholder="Seleccione categoria"
                 #id_categoria="ngModel"
                 [(ngModel)]="registro.id_categoria"
               >
-                <option
-                  *ngFor="let categoria of categorias"
-                  value="{{ categoria.id_categoria }}"
-                >
-                  {{ categoria.categoria_name }}
-                </option>
+
+              <option
+              *ngFor="let categoria of categorias"
+              value="{{ categoria.id_categoria }}"
+              >
+              {{ categoria.categoria_name }}
+              </option>
+
               </select>
             </div>
           </div>
         </div>
 <!--acciones variables-->
         <div class="row">
-          <div class="col-md-12 mb-3" >
-            <!--accion puntual-->
-            <div *ngIf="registro.id_categoria === '3'">
-               <app-accion></app-accion> 
-            </div>
-            <!--/end accion puntual-->
-            <!--check-->
-            <div *ngIf="registro.id_categoria === '1'">
-              <app-check></app-check>
-            </div>
-            <!--end check-->
+          <div class="col-md-12 mb-3">
+
+          <div *ngIf="registro.decidecategoria != ''">
+                      <!--accion puntual-->
+                      <div *ngIf="registro.id_categoria === '3'">
+                        <div *ngIf="registro.decidecategoria === '3'"><app-accion></app-accion></div>
+                      </div>
+                      <!--/end accion puntual-->
+                      <!--check-->
+                      <div *ngIf="registro.id_categoria === '1'">
+                        <div *ngIf="registro.decidecategoria === '1'"><app-check></app-check></div>
+                      </div>
+                      <!--end check-->
+          </div>
+          <div *ngIf="registro.decidecategoria === '0' ">
+                      <!--accion puntual-->
+                      <div *ngIf="registro.id_categoria === '3'">
+                        <app-accion></app-accion>
+                      </div>
+                      <!--/end accion puntual-->
+                      <!--check-->
+                      <div *ngIf="registro.id_categoria === '1'">
+                        <app-check></app-check>
+                      </div>
+                      <!--end check-->
+          </div>
+
+
           </div>  
         </div>
 <!--/end acciones variables-->
@@ -286,7 +313,14 @@
           #id_tarea="ngModel"
           [(ngModel)]="datoregistro.id_tarea"
         />
+        <input
+          name="id_persona_log"
+          type="hidden"
+          #id_persona_log="ngModel"
+          [(ngModel)]="datoregistro.id_persona_log"
+        />
 
+        
         <label for="id_persona"
           >Seleccione la persona para designarle el seguimiento</label
         >

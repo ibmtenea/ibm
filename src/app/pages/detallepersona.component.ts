@@ -56,6 +56,7 @@ export class DetallePersona implements OnInit{
     fieldTextType: boolean;
     datoregistro = {
       id_persona: this.activatedRoute.snapshot.paramMap.get('id_persona'),
+      id_persona_log: localStorage.getItem('id_persona'),
       nombres: null,
       telefono: null,
       email:  null,
@@ -82,13 +83,13 @@ export class DetallePersona implements OnInit{
 
 
   ngOnInit(){
-
     const id_persona = this.activatedRoute.snapshot.paramMap.get('id_persona');
+ 
     this.registroService.getPerson ( id_persona )
       .subscribe( (respuesta:Personas) => {
          this.registro = respuesta;
          this.registro.id_persona =   id_persona;
-        
+
       });
 
   }
@@ -153,7 +154,7 @@ export class DetallePersona implements OnInit{
   
 
 
-  guardarregistro( form: NgForm){
+  guardarregistro( ){
     console.log(this.registro);
     if(
       this.registro.nombres=='' || 

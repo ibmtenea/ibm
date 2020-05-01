@@ -11,7 +11,7 @@
             <a [routerLink]="['/', 'home']">Home</a>
           </li>
           <li class="breadcrumb-item active" aria-current="page">
-            {{ "txtNuevoRegistro" | translate }}
+            {{ "txtNuevoRegistro" | translate }} 
           </li>
         </ol>
       </nav>
@@ -21,6 +21,16 @@
   <div class="row m-2">
     <div class="col-md-6 pt-5">
       <div class="form-group">
+
+
+
+        <input
+        #id_persona="ngModel"
+        name="id_persona"
+        type="hidden"
+        [(ngModel)]="datoregistro.id_persona"
+      />
+
         <label for="tarea">{{ "txtTarea" | translate }}</label>
         <input
           required

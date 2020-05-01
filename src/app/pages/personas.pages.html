@@ -170,6 +170,9 @@
               let-row="row"
               let-value="value"
             >
+
+           
+
                 <span
                   title="{{ 'txtDobleclickparaeditar' | translate }}"
                   (dblclick)="editing[rowIndex + '-id_rol'] = true"
@@ -177,7 +180,7 @@
                 >
                   {{ value }}
                 </span>
-                <input type="hidden" #varId [value]="row.id" />
+                <input type="hidden" #varId [value]="row.id_persona" />
   
                 <select
                   class="form-control"
@@ -225,7 +228,10 @@
         </ngx-datatable>
       </div>
       <div class="col-md-4 pt-5">
-       
+        <div class="form-group">
+        
+  
+      </div>
         <div class="form-group">
           <label for="nombres">{{ "txtNombres" | translate }}</label>
           <input

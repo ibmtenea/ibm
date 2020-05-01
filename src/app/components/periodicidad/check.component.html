@@ -18,7 +18,7 @@
 
 
 
-<form [formGroup]="accionForm" class="formulario" (ngSubmit)="submitForm()" novalidate>
+<form [formGroup]="accionFormCheck" class="formulario" (ngSubmit)="submitForm()" novalidate>
   <div class="row">
       <div class="col-md-12">
         <div class="card bg-default">
@@ -56,13 +56,18 @@
             <div class="row">
             
               <div class="col-md-7">
-            <div [formGroup]="accionForm">
+            <div [formGroup]="accionFormCheck">
             <input type="hidden" class="form-control"  name="id_tarea"  formControlName="id_tarea"  />
             </div>
   
-            <div [formGroup]="accionForm">
+            <div [formGroup]="accionFormCheck">
               <input type="hidden" class="form-control"  name="id_categoria"  formControlName="id_categoria"  />
             </div>
+
+            
+          <div [formGroup]="accionFormCheck">
+            <input type="hidden" class="form-control"  name="id_persona"  formControlName="id_persona"  />
+          </div>
   
                <div class="row">
               <div class="col-md-7"><h5 class="titolpetit">Posición en la semana</h5>
@@ -77,7 +82,7 @@
                         <input type="checkbox"  name="dias.name{{dias.value}}" [value]="dias.value" 
                         checked="{{dias.checked}}"  
                         (change)="onCheckboxChange($event)"
-                        disabled
+                       
                         />
                       </div>
                     </div>
@@ -90,7 +95,7 @@
                       <div class="row"><div class="col-8">{{tramos.name}}</div><div class="col-4">
                         
                         <input type="checkbox" 
-                        disabled
+                        
                         [value]="tramos.value" checked="{{tramos.checked}}" (change)="onCheckboxChange($event)" />
                       
                         
@@ -108,7 +113,7 @@
                     <div *ngFor="let trames of tramosMes; let i=index">
                       <div class="row"><div class="col-8">{{trames.name}}</div><div class="col-4 text-right">
                         <input type="checkbox" 
-                        disabled
+                        
                         [value]="trames.value" checked="{{trames.checked}}" (change)="onCheckboxChange($event)" /></div></div>
                     </div>
                   </div>
@@ -122,7 +127,7 @@
                 <hr class="bdott" />
                 <div class="row mt-3">
                   <div class="col-12">
-                    <div class="row" [formGroup]="accionForm">
+                    <div class="row" [formGroup]="accionFormCheck">
                       <div class="col-6">
                         
                         <!-- <label for="dp">Fecha fin</label>
@@ -146,7 +151,7 @@
   
   
   
-                      <div class="col-6" [formGroup]="accionForm">
+                      <div class="col-6" [formGroup]="accionFormCheck">
                         
                         <!-- <label for="repeticiones">Número de repeticiones</label> 
                       
@@ -186,7 +191,7 @@
                            
                             checked="{{diam.checked}}"  
                             (change)="onCheckboxChange($event)"
-                            disabled
+                            
                             />
                           
   
@@ -199,9 +204,9 @@
             </div>
             <div class="row">
               <div class="col-12 text-center"><hr class="bdott" />
-                <!-- <button type="submit" class="btn btn-info mt-3">
+                 <button type="submit" class="btn btn-info mt-3">
                   Guardar periodicidad
-                </button> -->
+                </button> 
                
               </div>
             </div>

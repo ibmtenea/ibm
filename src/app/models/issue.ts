@@ -7,7 +7,9 @@ export class Issue {
   fecha: string;
   fechamodi: string;
   id_categoria: string;
-
+  id_persona: string;
   flag_visibilidad: string;
   prioridad: string;
+  decidecategoria: string;
+
 }

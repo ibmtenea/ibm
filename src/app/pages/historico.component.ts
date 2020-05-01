@@ -27,11 +27,11 @@ export class HistoricoComponent {
   final: Observable<Object>;
   dregistro = null;
   datoregistro = {
-    id: null,
+    id_log: null,
     fecha: null,
     tarea: null,
     issueg: null,
-    hora: null,
+    descripcion_accion: null,
     hour: null,
     estatus: null,
     status: null,
@@ -41,7 +41,7 @@ export class HistoricoComponent {
   @ViewChild(DatatableComponent, { static: false }) table: DatatableComponent;
   ColumnMode = ColumnMode;
   campo: any;
-  id: any;
+  id_log: any;
   valor: any;
   ever: any;
   datos: string;
@@ -77,6 +77,7 @@ export class HistoricoComponent {
       req.open('GET', `${this.PHP_API_SERVER}/ajax/read_historico.php`);
       req.onload = () => {
         cb(JSON.parse(req.response));
+        console.log(JSON.parse(req.response));
       };
       req.send();
     }
@@ -117,7 +118,7 @@ export class HistoricoComponent {
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
     const temp = this.temp.filter(function(d) {
-      return  d.tarea.toLowerCase().indexOf(val) !== -1 || d.hora.toLowerCase().indexOf(val) !== -1|| d.estatus.toLowerCase().indexOf(val) !== -1 || !val;
+      return  d.tarea.toLowerCase().indexOf(val) !== -1 || d.fecha.toLowerCase().indexOf(val) !== -1|| d.nombres.toLowerCase().indexOf(val) !== -1 || !val;
     });
     // actualizamos las rows
     this.rows = temp;

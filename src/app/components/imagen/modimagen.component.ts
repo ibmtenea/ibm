@@ -39,7 +39,7 @@ export class ModimagenComponent implements OnInit {
 
           fotopersona: ['', Validators.required],
           id_persona: this.activatedRoute.snapshot.paramMap.get('id_persona'),
-          
+          id_persona_log: localStorage.getItem('id_persona'),
 
         });
 
@@ -92,7 +92,10 @@ export class ModimagenComponent implements OnInit {
     let reader = e.target;
     this.imageSrc = reader.result;
     const id_persona = this.activatedRoute.snapshot.paramMap.get('id_persona')
-    this.datosFoto = JSON.stringify({ "id_persona": id_persona , "fotopersona": this.imageSrc});
+    
+    const id_persona_log = localStorage.getItem('id_persona')
+
+    this.datosFoto = JSON.stringify({ "id_persona_log": id_persona_log ,"id_persona": id_persona , "fotopersona": this.imageSrc});
     this.perioService.altaRegistroFoto(this.datosFoto).subscribe();
     
     Swal.fire({

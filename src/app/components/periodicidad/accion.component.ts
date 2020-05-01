@@ -41,7 +41,7 @@ export class AccionComponent implements OnInit {
   tramosSemana: TramosSemana[] = [];
   tramosMes: TramosMes[] = [];
   diasSemana: TramosDias[] = [];
-  
+
   datosRecibidos: string;
   dias: any;
   accionForm: FormGroup;
@@ -50,11 +50,13 @@ export class AccionComponent implements OnInit {
 
   mesVigente = new Date().getMonth() + 1;
   datosborrado: string;
+  repeticiones: PeriodicidadMadre;
+  fechafin: any;
 
   constructor(private fb: FormBuilder, private activatedRoute: ActivatedRoute, private httpClient: HttpClient, private perioService: PeriodicidadService) {
 
     //cargo los dias del mes en curso
-    httpClient.get<any[]>(this.PHP_API_SERVER + '/ajax/read_dias_mes_actual.php').subscribe(result => {
+    httpClient.get<any[]>(this.PHP_API_SERVER + '/ajax/read_dias_mes_actual.php?id_tarea=' + this.datoregistro.id_tarea).subscribe(result => {
       this.diasMes = result;
     }, error => console.error(error));
 
@@ -78,7 +80,7 @@ export class AccionComponent implements OnInit {
       this.periodicidades = result;
     }, error => console.error(error));
 
-  
+
 
 
 
@@ -90,7 +92,8 @@ export class AccionComponent implements OnInit {
     //   repeticiones: new FormControl(this.madre),
       repeticiones: ['', Validators.required],
       id_tarea: this.activatedRoute.snapshot.paramMap.get('id_tarea'),
-      id_categoria: '3' //id de accion puntual
+      id_categoria: '3', //id de accion puntual
+      id_persona: localStorage.getItem('id_persona')
     });
 
 
@@ -109,53 +112,23 @@ export class AccionComponent implements OnInit {
   }
 
 
-
-
-  
   cargaMadre(){
-    const id_tarea = this.activatedRoute.snapshot.paramMap.get('id_tarea')
+
+
+    const id_tarea = this.activatedRoute.snapshot.paramMap.get('id_tarea');
+
     this.perioService.getDatosMadre(id_tarea).subscribe( (respuesta: PeriodicidadMadre) => {
     this.madre = respuesta;
-    this.mad = respuesta[0];
-    this.accionForm.controls['fechafin'].setValue(this.madre[0]['fechafin']);
-    this.accionForm.controls['repeticiones'].setValue(this.madre[0]['repeticiones']);
-    console.log(this.mad.fechafin);
+    this.mad = respuesta;
+
     });
+
   }
 
-  // cargaMadre(){
-  //   const id_tarea = this.activatedRoute.snapshot.paramMap.get('id')
-  //   this.perioService.getDatosMadre(id_tarea).subscribe(respuesta => {
-  //   this.madre = respuesta[0];
-  //   this.accionForm.controls['repeticiones'].setValue(this.madre['repeticiones']);
-  //   this.accionForm.controls['fechafin'].setValue('2020-12-05');
-  //   console.log(this.madre);
-  //   });
-  //   }
 
 
 
-  //   this.perioService.getDatosMadre (this.datoregistro.id_tarea)
-  //     .subscribe( (
-  //       respuesta:PeriodicidadMadre) => {
-  //        this.madre = respuesta;
-  //        console.log(this.madre);
-  //     });
-
-
-  // }
-
-
-
-
-
-
-
-
-
-
-
-  //eliminar registro      
+  //eliminar registro
   borrarRegistro(identificacion) {
     this.datosborrado = JSON.stringify({ "tarea": this.datoregistro.id_tarea, "id_value": identificacion });
     this.perioService.delete(this.datosborrado).subscribe();

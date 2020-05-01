@@ -11,11 +11,13 @@ import { Constantes } from '../models/constantes.model';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Router } from '@angular/router';
 import { Roles } from '../models/roles';
-import { Recurrencias } from '../models/recurrencias';
+
 import { Estados } from '../models/estados';
 import { Categorias } from '../models/categorias';
 import { FullCalendarOptions, EventObject } from 'ngx-fullcalendar';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+
+
 
 @Component({
   selector: 'app-alta',
@@ -54,16 +56,12 @@ export class AltaComponent {
     datoregistro = {
         id_tarea: null,
         tarea: null,
-      
+        id_persona: localStorage.getItem('id_persona'),
         hora: null,
-       
         estatus: null,
-
         observaciones: null,
         id_categoria:  null,
-  
         flag_visibilidad:  null,
-  
         prioridad:  null
     }
 
@@ -74,7 +72,7 @@ export class AltaComponent {
   valor: any;
   ever: any;
   datos: string;
-  
+
   
   constructor(private httpClient: HttpClient, private apiService: ApiService, private router: Router) {
 
@@ -123,7 +121,9 @@ export class AltaComponent {
             text: 'Registro añadido',
             icon: 'success',  
             showConfirmButton : true
-          }),this.recarga();      
+          })
+         // ,this.recarga()
+          ;      
         });
     }
   }
