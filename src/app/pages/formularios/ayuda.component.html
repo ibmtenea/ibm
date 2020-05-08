@@ -1,0 +1,154 @@
+<div class="rol">
+    <div class="col-12 alert bg-dark text-white">
+        <div class="row">
+            <div class="col-9"><h4>Ayuda - Añada o edite elementos FAQ a la página de Ayuda</h4></div>
+            <div class="col-3 text-right"><a (click)="openayuda(content)" class="altaseguimientow" alt="Añadir Ayuda" title="Añadir Ayuda"><i class="fa fa-plus fa-1"></i></a></div>
+        </div>
+    </div>
+</div>
+<div class="rol">
+    <div class="col-12 alert p-0 m-0 ovefr">
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th>Título</th>
+                    <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ayuda of ayudas">
+                        <td>{{ ayuda.ayudatitulo }}</td>
+                        <td class="text-right"> 
+                            
+                        <a 
+                        (click)="openayudaModi(contentmodi,ayuda.id_ayuda)" 
+                        class="altaseguimiento mr-2" 
+                        alt="Modificar Ayuda" 
+                        title="Modificar Ayuda"><i class="fa fa-edit"></i></a>
+
+                        <a
+                            alt="Eliminar Ayuda"
+                            title="Eliminar Ayuda"
+                            (click)="eliminarAyuda(ayuda, i)"
+                            class="altaseguimiento"
+                            ><i class="fa fa-trash"></i
+                        ></a>
+ 
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        Nueva entrada de FAQs
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <input
+          name="id_persona_log"
+          type="hidden"
+          #id_persona_log="ngModel"
+          [(ngModel)]="datosformularioayuda.id_persona_log"
+        />
+        <label for="ayudatitulo">Escriba un título</label>
+        <input
+        name="ayudatitulo"
+        type="text"
+        maxlength="100"
+        #ayudatitulo="ngModel"
+        class="form-control  mb-2"
+        [(ngModel)]="datosformularioayuda.ayudatitulo"
+        />
+
+        <p>Texto (máx 650 carácteres)</p>
+        <div class="input-group">
+            <textarea rows="10" 
+            required 
+            class="form-control  mb-2" 
+            maxlength="650"
+            name="ayudatexto" 
+            #ayudatexto="ngModel" 
+            [(ngModel)]="datosformularioayuda.ayudatexto"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button (click)="guardarNuevaAyuda()" class="btn btn-info">
+        Guardar registro
+      </button>
+    </div>
+  </ng-template>
+
+
+  <!--MODIFICAR-->
+  <ng-template #contentmodi let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        Modificar entrada de FAQs
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <input
+          name="id_persona_log"
+          type="hidden"
+          #id_persona_log="ngModel"
+          [(ngModel)]="datosformulariomodi.id_persona_log"
+        />
+
+        <input
+        name="id_ayuda"
+        type="hidden"
+        #id_ayuda="ngModel"
+        [(ngModel)]="datosformulariomodi.id_ayuda"
+      />
+
+        <label for="ayudatitulo">Escriba un título</label>
+        <input
+        name="ayudatitulo"
+        type="text"
+        maxlength="100"
+        #ayudatitulo="ngModel"
+        class="form-control  mb-2"
+        [(ngModel)]="datosformulariomodi.ayudatitulo"
+        />
+
+        <p>Texto (máx 650 carácteres)</p>
+        <div class="input-group">
+            <textarea rows="10" 
+            required 
+            class="form-control  mb-2" 
+            maxlength="650"
+            name="ayudatexto" 
+            #ayudatexto="ngModel" 
+            [(ngModel)]="datosformulariomodi.ayudatexto"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button (click)="guardarModificarAyuda()" class="btn btn-info">
+        Guardar registro
+      </button>
+    </div>
+  </ng-template>

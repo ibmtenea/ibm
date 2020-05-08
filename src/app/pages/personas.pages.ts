@@ -193,7 +193,7 @@ export class PersonasPage {
           Swal.fire({
             text: 'Registro actualizado',
             icon: 'success',  
-            showConfirmButton : false
+            showConfirmButton : true
           })
       
         });

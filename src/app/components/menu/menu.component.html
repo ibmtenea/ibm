@@ -28,7 +28,7 @@
       <div class="media-body" >
         <h5 class="minnom m-0">{{ user.nombres }}</h5>
         <p class="font-weight-light roledef mt-2 mb-2">
-          <em>{{ user.nombre_rol }}{{ user.level_rol }}</em>
+          <em>{{ user.rol_name }}</em>
         </p>
         
         <a [routerLink]="['/', 'perfil', '1']" class="text-light">
@@ -48,12 +48,7 @@
 
   <ul class="nav flex-column bg-white mb-0">
 
-    <li class="nav-item" routerLinkActive="active">
-      <a [routerLink]="['/', 'elegirturno']" class="nav-link  ">
-        <i class="fa fa-home mr-3  fa-fw"></i>
-        Turnos
-      </a>
-    </li>
+
 
 
     <!-- <ng-container *ngIf="show"> -->
@@ -64,8 +59,15 @@
       </a>
     </li>
   <!-- </ng-container> -->
+  <!-- <li class="nav-item" routerLinkActive="active">
+      <a  class="nav-link  ">
+      <i class="fa fa-home mr-3  fa-fw"></i>
+      Turnos anteriores
+    </a>
+  </li> -->
 
 
+  <ng-container *ngIf="user.level_rol === '8'"> 
     <li class="nav-item" routerLinkActive="active">
       <a [routerLink]="['/', 'personas']" class="nav-link ">
         <i class="fa fa-users mr-3  fa-fw"></i>
@@ -84,7 +86,9 @@
         {{ "txtDescargaInformacion" | translate }}
       </a>
     </li>
+  </ng-container>
   </ul>
+
   <hr />
 
 
@@ -93,6 +97,16 @@
    {{ "txtRolAdministrador" | translate }}
   </p>
   <ul class="nav flex-column bg-white mb-0">
+
+    <li class="nav-item" routerLinkActive="active">
+      <a [routerLink]="['/', 'formlistados']" class="nav-link ">
+        <i class="fa fa-cog mr-3  fa-fw"></i>
+        Listado de componentes
+      </a>
+    </li>
+
+
+
     <li class="nav-item" routerLinkActive="active">
       <a [routerLink]="['/', 'configuracion']" class="nav-link ">
         <i class="fa fa-cog mr-3  fa-fw"></i>

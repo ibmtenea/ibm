@@ -75,7 +75,7 @@
                 type="text"
                 class="form-control"
                 [value]="value"
-                [title]="row.id"
+                [title]="row.id_persona"
               />
             </ng-template>
           </ngx-datatable-column>
@@ -102,7 +102,7 @@
                 type="text"
                 class="form-control"
                 [value]="value"
-                [title]="row.id"
+                [title]="row.id_persona"
               />
             </ng-template>
           </ngx-datatable-column>
@@ -132,7 +132,7 @@
                 type="text"
                 class="form-control"
                 [value]="value"
-                [title]="row.id"
+                [title]="row.id_persona"
               />
             </ng-template>
           </ngx-datatable-column>
@@ -189,7 +189,7 @@
                   (blur)="editing[rowIndex + '-id_rol'] = false"
                   (change)="updateValue($event, 'id_rol', rowIndex)"
                   [value]="value"
-                  [title]="row.id"
+                  [title]="row.id_persona"
                 >
                 <option *ngFor="let rol of roles" value={{rol.id_rol}}>
                     {{rol.rol_name}}

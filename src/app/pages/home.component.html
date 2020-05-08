@@ -11,7 +11,7 @@
             <a [routerLink]="['/', 'home']">Home</a>
           </li>
           <li class="breadcrumb-item active" aria-current="page">
-            {{ "txtRegistros" | translate }}
+            {{ "txtRegistros" | translate }} 
           </li>
         </ol>
       </nav>
@@ -22,7 +22,14 @@
     <div class="col-md-12 alturaminima mb-5">
 
 <div class="row">
-  <div class="col-6">
+
+
+  <div class="col-8 text-left">
+    <app-elegirturno></app-elegirturno>
+    </div>
+
+
+  <div class="col-2">
     <div class="form">
       <mat-form-field floatPlaceholder="never" color="accent">
         <input
@@ -34,8 +41,14 @@
       </mat-form-field>
     </div>
   </div>
-  <div class="col-6 text-right">
-    <a alt="Nuevo registro" title="nuevo registro" [routerLink]="['/', 'alta']" class="btn btn-info pt4 btn-circle posicionplus"><i class="fa fa-plus fa-3"></i></a>
+
+
+
+
+  <div class="col-2 text-right">
+    <div *ngIf="registroroleperson.id_rol== '8' || registroroleperson.id_rol== '5' || registroroleperson.id_rol== '6'">
+      <a alt="Nuevo registro" title="nuevo registro" [routerLink]="['/', 'alta']" class="btn btn-info pt4 btn-circle posicionplus"><i class="fa fa-plus fa-3"></i></a>
+    </div>
   </div>
 </div>
 
@@ -59,7 +72,7 @@
             let-value="value"
             let-row="row"
           >
-            <div class="text-center">{{ row.id_tarea }}</div>
+            <div class="text-center">{{ row.id_tarea }} </div>
           </ng-template>
         </ngx-datatable-column>
 
@@ -162,7 +175,7 @@
           </ng-template>
         </ngx-datatable-column>
 
-        <ngx-datatable-column name="ver" [maxWidth]="80">
+        <ngx-datatable-column name="ver" [maxWidth]="150">
           <ng-template
             class="mat-column-id"
             ngx-datatable-cell-template
@@ -172,6 +185,13 @@
             <div class="text-center">
               <div class="row">
                 <div class="col-12 p0 m0">
+
+ 
+ <div *ngIf="row.disabledBotones===turnoValor && registroroleperson.id_rol!= '8'">
+                  <button (click)="duplicar(row, i)"
+                  class="btn btn-warning botonsizes mr-1">
+                      <i class="fa fa-clone"></i>
+                  </button>
                   <a
                     [routerLink]="['/detalle', row.tokenid]"
                     class="btn btn-warning botonsizes mr-1"
@@ -183,6 +203,27 @@
                   >
                     <i class="fa fa-trash"></i>
                   </button>
+</div> 
+
+<div *ngIf="registroroleperson.id_rol== '8'">
+                <button (click)="duplicar(row, i)"
+                class="btn btn-warning botonsizes mr-1">
+                    <i class="fa fa-clone"></i>
+                </button>
+                <a
+                  [routerLink]="['/detalle', row.tokenid]"
+                  class="btn btn-warning botonsizes mr-1"
+                  ><i class="fa fa-pencil"></i
+                ></a>
+                <button
+                  (click)="borrarRegistro(row, i)"
+                  class="btn btn-warning botonsizes"
+                >
+                  <i class="fa fa-trash"></i>
+                </button>
+</div>
+
+
                 </div>
               </div>
             </div>

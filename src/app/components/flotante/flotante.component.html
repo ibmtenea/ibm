@@ -1,6 +1,6 @@
 
 
-  <ng-container *ngIf="user.level_rol === '8'"> 
+  <ng-container *ngIf="user.level_rol === '8' && isOn"> 
 
   
   <div class="example-box" cdkDrag>
@@ -8,13 +8,25 @@
       <div class="card">
         <div class="card-header" title="Arrastra para recolocar la consola" alt="Arrastra para recolocar la consola" id="cabeceraDraggable">
         <div class="row">
-          <div class="col-6 their"><h4>Consola de actividad</h4></div>
-          <div class="col-6 text-right">
+          <div class="col-11 their"><h4>Consola de actividad</h4></div>
+          <div class="col-1 text-right">
+
+          
+<div class="row">
+          <div class="col-6 text-right botona "> 
             <a class="card-link rightfloat" 
-          data-toggle="collapse" 
-          data-parent="#card-9668745984" 
-          href="#card-element-57874457742"> 
-           </a>
+            data-toggle="collapse" 
+            data-parent="#card-9668745984" 
+            href="#card-element-57874457742"> 
+            </a>
+           </div>
+          <div class="col-6 text-right botonb pt-1">
+                <a href="#" class="card-link rightfloat" (click)="isOn= false"></a>
+          </div>
+</div> 
+
+
+
           </div>
         </div>
         </div>
@@ -22,10 +34,7 @@
           <div class="card-body overscroll">
 
             
-
-
-      
-
+<app-mensajes></app-mensajes>
 
 
 
@@ -35,3 +44,9 @@
     </div>
   </div>
 </ng-container>
+
+<div class="row ">
+  <div class="col-12 footer text-center">
+     <p *ngIf="user.level_rol === '8' && !isOn"><button (click)="isOn= true">+ abrir consola</button></p>
+  </div>
+</div>

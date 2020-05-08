@@ -1,4 +1,6 @@
 export class Turnos {
+    horainicio: string;
+    horafin: string;
     id_turno: string;
     turno: string;
     tipo_turno: string;

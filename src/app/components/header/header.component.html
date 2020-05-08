@@ -15,6 +15,14 @@
 
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="navbar-nav ml-md-auto">
+
+          <li class="nav-item">
+            <a  [routerLink]="['/', 'abririncidencia']"  class="nav-link" alt="Abrir incidencia" title="Abrir incidencia">
+              Enviar incidencia
+            </a>
+          </li>
+
+
           <li class="nav-item">
 
          <app-ayuda></app-ayuda>
@@ -53,5 +61,57 @@
 </div>
 
 
+
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Nueva entrada de FAQs
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <input
+        name="id_persona_log"
+        type="hidden"
+        #id_persona_log="ngModel"
+        [(ngModel)]="datosformularioayuda.id_persona_log"
+      />
+      <label for="ayudatitulo">Escriba un título</label>
+      <input
+      name="ayudatitulo"
+      type="text"
+      maxlength="100"
+      #ayudatitulo="ngModel"
+      class="form-control  mb-2"
+      [(ngModel)]="datosformularioayuda.ayudatitulo"
+      />
+
+      <p>Texto (máx 650 carácteres)</p>
+      <div class="input-group">
+          <textarea rows="10" 
+          required 
+          class="form-control  mb-2" 
+          maxlength="650"
+          name="ayudatexto" 
+          #ayudatexto="ngModel" 
+          [(ngModel)]="datosformularioayuda.ayudatexto"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button (click)="guardarNuevaAyuda()" class="btn btn-info">
+      Guardar registro
+    </button>
+  </div>
+</ng-template>
 
 

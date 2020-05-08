@@ -1,79 +1,41 @@
-<div class="page-content" id="content">
-  <app-header></app-header>
-  <app-menu></app-menu>
 
-  <div class="row m-2">
-    <div class="col-md-12 mt-4">
-      <h3>Turnos</h3>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a [routerLink]="['/', 'home']">Home</a>
-          </li>
-          <li class="breadcrumb-item active" aria-current="page">
-            Turnos
-          </li>
-        </ol>
-      </nav>
-    </div>
-  </div>
 
-  <div class="row m-2 mt-4">
-    <div class="col-md-6 alturaminima mb-5">
 
-      <h5>Disponibles para rol: <b>{{ userPersona.nombre_rol }}</b></h5>
-<form [formGroup]="reactiveForm" (ngSubmit)="onSubmit()">      
-<table class="table mt-3">
-  <tbody>
-    <tr *ngFor="let listat of listaturnos">
-      <td class="namturnos">{{listat.turno}}</td>
-      <td>{{listat.tipo_turno}}</td>
-      <td>{{listat.turno_horario}}</td>
-      <td>
-        <label  class="radios">
-          <input 
-          [value]="listat.id_turno"
-          formControlName="id_turno"
-          type="radio"  
-          id="{{listat.id_turno}}" 
-          name="id_turno">
-          <span class="checkmark"></span>
-        </label>
+<div *ngIf="registroroleperson.id_rol != '8' && registroroleperson.id_rol != '5' && registroroleperson.id_rol != '6'">
 
-      </td>
-    </tr>
-  </tbody>
-</table>
+<form [formGroup]="reactiveFormTurnos" (ngSubmit)="onSubmit( f )" #f="ngForm" class="form-inline">      
 
-<button type="submit">enviar</button>
+
+
+   <div class="form-group"><select 
+    class="form-control"
+    formControlName="id_turno"
+    name="id_turno" 
+    (change)="onSubmitSelect()"
+    [(ngModel)]="selectedOption"
+    ><option 
+      *ngFor="let listat of listaturnos; let x = index" 
+      [value]="listat.id_turno"
+      >{{listat.turno}} - {{listat.tipo_turno}} - {{listat.turno_horario}}</option>
+    </select>
+
+    <button type="submit" class="btn btn-info ml-2">Establecer turno</button>
+
+    
+</div> 
+ 
+    
 </form>
 
-
-
-
-
-
-
-
-
-
-    </div>
-    <div class="col-md-6 alturaminima mb-5">
-
-
-
-
-
-turnos anteriores
-
-
-
-
-    </div>
-  </div>
-
-  <app-footer></app-footer>
 </div>
+
+
+
+
+
+
+
+
 
 
 

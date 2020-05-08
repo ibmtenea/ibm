@@ -1,9 +1,24 @@
 
 <div class="row ">
-    <div class="col-12 footer bg-dark text-center  text-white">
+    <div class="col-9 footer bg-dark text-center  text-white">
 
    
           &copy; 2020 - {{ any }}
-        </div>
+    </div>
+    <div class="col-3 footer bg-dark text-center  text-white">
+      Status servidor: 
+      <span *ngIf="wsService.socketStatus" class="text-success">Online</span>
+      <span *ngIf="!wsService.socketStatus"  class="text-danger">Offline</span>
+    </div>
+
+
+
+
+
+
+
+
+
+
 
 </div>

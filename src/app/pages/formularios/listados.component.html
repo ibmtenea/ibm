@@ -1,0 +1,43 @@
+<div class="page-content" id="content">
+    <app-header></app-header>
+    <app-menu></app-menu>
+  
+    <div class="row m-2">
+      <div class="col-md-12 mt-4">
+        <h3>{{ "txtRegistros" | translate }}</h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="['/', 'home']">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Listado de componentes
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  
+    <div class="row m-2 mt-4">
+      <div class="col-md-12 alturaminima mb-5">
+  
+            <div class="row">
+                <div class="col-6">
+                    <app-formroles></app-formroles>
+                </div>
+           
+                <div class="col-6">
+                    <app-formayuda></app-formayuda>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12"><app-formturnos></app-formturnos>
+                    
+                </div>
+            </div> 
+       
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+  

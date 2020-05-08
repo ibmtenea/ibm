@@ -8,6 +8,11 @@ import { ColumnMode } from '@swimlane/ngx-datatable';
 import Swal from 'sweetalert2';
 import { Constantes } from '../models/constantes.model';
 import { TranslateService } from '@ngx-translate/core';
+import { DetalleService } from '../services/detalle.service';
+import { Turnos } from '../models/turnos';
+import { Personas } from '../models/personas';
+import { ApiPersonas } from '../services/apipersonas.service';
+
 
 @Component({
   selector: 'app-app',
@@ -16,14 +21,16 @@ import { TranslateService } from '@ngx-translate/core';
 })
 
 export class HomeComponent {
-   
+
+  turnoValor= localStorage.getItem('valorTurno');
   personas:Issue[] = [];
   issue: Issue = new Issue();
   editing = {};
   rows = [];
   temp = [];
   private PHP_API_SERVER = Constantes.API_SERVER; //URL del servicio
-
+  //registroroleperson:Personas = new Personas();
+  registroroleperson: Personas = new Personas();
   numero: number;
   final: Observable<Object>;
   dregistro = null;
@@ -47,19 +54,21 @@ export class HomeComponent {
   ever: any;
   datos: string;
   datosborrado: string;
-
-
+  datosclon: string;
+  periodetalle: Turnos = new Turnos();
   my_messages = {
     'emptyMessage': '',
     'totalMessage': ''
   };
+  req: any;
+//  turnoValor= localStorage.getItem('valorTurno');
  
- 
-  constructor(private translate: TranslateService,private httpClient: HttpClient, private apiService: ApiService) {
+  constructor(private registroRoleService: ApiPersonas,private translate: TranslateService,private httpClient: HttpClient, private registroService: DetalleService, private apiService: ApiService) {
         this.fetch(data => {
           // cache
             this.temp = [...data];
             this.rows = data;
+           
         });
 
         translate.get('Total', {value: 'eeeeeeeeee'})
@@ -67,7 +76,7 @@ export class HomeComponent {
         translate.get('No hay resultados para mostrar', {value: ''})
         .subscribe((res: string) => this.my_messages.emptyMessage = res);
 
-
+        console.log("COOOOOOOOOOOOO", Constantes.API_SERVER);
   }
 
   //el ngoninit nos servira para recargar en caso de error de validacion
@@ -77,6 +86,18 @@ export class HomeComponent {
         this.rows = data;
       
       });
+
+      //verificar  id_usuario y id_rol
+      const id_persona = localStorage.getItem('id_persona');
+      this.registroRoleService.getPerson ( id_persona )
+        .subscribe( (respuesta:Personas) => {
+           this.registroroleperson = respuesta;
+           this.registroroleperson.id_persona =   id_persona;
+           //this.registroroleperson.id_rol = '8888';
+        });
+
+       
+
   }
 
   //reload pagina al usar sweet alerts etc
@@ -88,27 +109,50 @@ export class HomeComponent {
 
 
 
-
   //cargamos el listado
   fetch(cb) {
     if(cb){
-      const id_persona = localStorage.getItem('id_persona');
-      const valorTurno = localStorage.getItem('valorTurno');
       const req = new XMLHttpRequest();
-      req.open('GET', `${this.PHP_API_SERVER}/ajax/registro_read.php?id_persona=${id_persona}&valorturno=${valorTurno}`);
-      req.onload = () => {
-        cb(JSON.parse(req.response));
+      const id_persona = localStorage.getItem('id_persona');
 
-      };
-      req.send();
+      //const valorTurno = '';
+      if(localStorage.getItem('valorTurno')==null){
+
+        this.httpClient.get<any[]>(this.PHP_API_SERVER + `/ajax/turnos_read_by__id_persona.php?id_persona=${ id_persona }` )
+        .subscribe(  (result:any) => {
+          this.periodetalle = result;
+          const valorTurno = this.periodetalle.id_turno;
+ 
+          req.open('GET', `${this.PHP_API_SERVER}/ajax/registro_read.php?id_persona=${id_persona}&valorturno=${valorTurno}`);
+          req.onload = () => {
+            cb(JSON.parse(req.response));
+          };
+          req.send();
+        }, error => console.error(error));
+
+        
+      } 
+      else {
+        const valorTurno = localStorage.getItem('valorTurno');
+        req.open('GET', `${this.PHP_API_SERVER}/ajax/registro_read.php?id_persona=${id_persona}&valorturno=${valorTurno}`);
+        req.onload = () => {
+          cb(JSON.parse(req.response));
+        };
+        req.send();
+      }
+
+
+
+
+
+        // const valorTurno = localStorage.getItem('valorTurno');
+        
+
+     
+
+    
     }
   }
-
-
-
-
-
-
 
 
 
@@ -188,12 +232,49 @@ export class HomeComponent {
             text: 'Registro actualizado',
             icon: 'success',  
             showConfirmButton : false
-          })
+          }), this.recarga();
       
         });
     }
 
   }
+
+
+
+  duplicar(registro: Issue, i:string) {
+
+      Swal.fire({
+        title: `¿Desea crear una tarea a partir de esta?`,
+        text: 'Confirme si desea proceder',
+        icon: 'question',
+        showConfirmButton: true,
+        showCancelButton: true
+
+      }).then(orden => {
+        if (orden.value) {
+
+          const id_persona = localStorage.getItem('id_persona');
+          this.datosclon = JSON.stringify({ "id_persona": id_persona, "id_tarea": registro.id_tarea });
+         
+          let peticion: Observable<any>;
+         
+          peticion = this.registroService.actualizarRegistroNuevaId(this.datosclon);
+          peticion.subscribe(respuesta => {
+            Swal.fire({
+              title: this.id_tarea,
+              text: 'Registro duplicado',
+              icon: 'success',
+              showConfirmButton: true
+            })
+            , this.recarga();
+
+          });
+        }
+      });
+  }
+
+
+
 
 
    //eliminar registro      
@@ -217,7 +298,8 @@ export class HomeComponent {
               text: 'Registro eliminado',
               icon: 'success',  
               showConfirmButton : false
-            }) ,this.recarga();  
+            }) 
+            ,this.recarga();  
 
         }
       });

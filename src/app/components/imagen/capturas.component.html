@@ -1,0 +1,22 @@
+
+<div class="row">
+  <div class="col-12 text-center mt-4">
+
+
+<form [formGroup]="accionForm" class="formulario" novalidate>
+  <input type="hidden" class="form-control"  name="id_persona"  formControlName="id_persona"  />
+  <label class="fileContainer"><i class="fa fa-camera"></i>
+
+  <input 
+         type="file"
+         name="fotopersona"  
+         formControlName="fotopersona"
+         (change)="handleInputChange($event)"
+         accept="image/*" 
+         
+         />
+
+ </label>
+</form>
+</div>
+</div>

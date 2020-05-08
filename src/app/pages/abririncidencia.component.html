@@ -1,0 +1,88 @@
+<div class="page-content" id="content">
+    <app-header></app-header>
+    <app-menu></app-menu>
+  
+    <div class="row m-2">
+      <div class="col-md-12 mt-4">
+        <h3>{{ "txtRegistros" | translate }}</h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="['/', 'home']">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Abrir incidencia
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <form #f="ngForm" (ngSubmit)="guardaryenviarIncidencia( f )" [formGroup]="incidenciaForm">
+
+    <div class="row m-2 mt-4">
+      <div class="col-md-6 alturaminima mb-5">
+        <p>Si tiene alguna sugerencia o incidencia que comunicarnos con respecto al funcionamiento de esta aplicación, por favor, haga uso del siguiente formulario.</p>
+        
+        <hr class="mb-3 mt-2" />
+
+      
+                <label>Enunciado</label>
+                <input type="text"
+                placeholder="Escriba un enunciado" 
+                autocomplete="off" 
+                class="form-control input-sm mb-3"
+                value=""
+                formControlName="enunciado">
+
+                <label>Texto</label>
+                <textarea rows="10"
+                placeholder="Escriba un texto" 
+                class="form-control  input-sm mb-3"
+                formControlName="textoincidencia"></textarea>
+
+
+            <button  
+            [disabled]="incidenciaForm.invalid" 
+            class="btn btn-info">
+              Enviar incidencia
+          </button>
+
+  
+        
+
+
+      </div>
+      <div class="col-md-6 alturaminima mb-5">
+        <div class="row">
+            <div class="col-12 text-center"><img [src]="imgURL" height="200" *ngIf="imgURL"></div>
+        </div>
+        <div class="row">
+        <div class="col-12 text-center mt-4">
+
+
+
+                        <label for="imagenincidencia" class="fileContainer"><i class="fa fa-camera"></i>
+                        <input 
+                               type="file"
+                               id="imagenincidencia"
+                               name="imagenincidencia"  
+                               formControlName="imagenincidencia"
+                  
+                               accept="image/*" 
+                               (change)="preview($event)"
+                               />
+                      
+                       </label>
+                       <hr />
+                       <p class="mt-2">Si desea adjuntar una captura de pantalla, por favor pulse aquí</p>
+                    </div>
+                
+                </div>
+  
+
+      </div>
+    </div>
+</form> 
+    <app-footer></app-footer>
+  </div>
+  

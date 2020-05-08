@@ -38,8 +38,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
-
+import {environment} from '../environments/environment';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -55,8 +54,7 @@ import { HistoricoComponent } from './pages/historico.component';
 import { DetalleHistoricoComponent } from './pages/detallehistorico.component';
 import { DetallePersona } from './pages/detallepersona.component';
 import { ModimagenComponent } from './components/imagen/modimagen.component';
-
-
+import { CapturasComponent } from './components/imagen/capturas.component';
 import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
 import {JpImagePreloadModule} from '@jaspero/ng-image-preload';
@@ -64,8 +62,21 @@ import { PerfilPersona } from './pages/perfil.component';
 import { AyudaComponent } from './components/ayuda/ayuda.component';
 import { ElegirTurno } from './pages/turnos/elegir.component';
 import { FlotanteComponent } from './components/flotante/flotante.component';
+import { MensajesComponent } from './pages/mensajes/mensajes.component';
+import { ListaUsuariosComponent } from './components/lista-usuarios/lista-usuarios.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { IdentificacionComponent } from './pages/identificacion/identificacion.component';
+import { HistoricoMiniComponent } from './pages/historicomini.component';
 
+import { ConfiguracionGeneralComponent } from './pages/formularios/configuracion-general.component';
+import { AyudaFormComponent } from './pages/formularios/ayuda.component';
+import { RolesFormComponent } from './pages/formularios/roles.component';
+import { TurnosFormComponent } from './pages/formularios/turnos.component';
+import { ListadosComponent } from './pages/formularios/listados.component';
+import { AbririncidenciaComponent } from './pages/abririncidencia.component';
 
+const config: SocketIoConfig = { url: environment.wsUrl, options: {} };
 
 registerLocaleData(localeEs, 'es');
 
@@ -77,7 +88,13 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 @NgModule({
   declarations: [
+
+    ChatComponent,
+    ListaUsuariosComponent,
+    MensajesComponent,
+    IdentificacionComponent,
     AppComponent,
+    HistoricoMiniComponent,
 CheckComponent,
     HomeComponent,
     DetalleComponent,
@@ -86,6 +103,7 @@ CheckComponent,
     DetalleHistoricoComponent,
   AccionComponent,
   ModimagenComponent,
+  CapturasComponent,
   AccionHistoricoComponent,
     FooterComponent,
     HeaderComponent,
@@ -99,7 +117,13 @@ HistoricoComponent,
     AltaComponent,
     DetallePersona,
     PerfilPersona,
-AyudaComponent
+AyudaComponent,
+AyudaFormComponent,
+RolesFormComponent,
+TurnosFormComponent,
+ConfiguracionGeneralComponent,
+ListadosComponent,
+AbririncidenciaComponent
     
 
  
@@ -129,6 +153,7 @@ AyudaComponent
     ToastrModule.forRoot(),
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
+    SocketIoModule.forRoot(config),
     CKEditorModule,
     TranslateModule.forRoot({
       loader: {

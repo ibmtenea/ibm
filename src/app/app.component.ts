@@ -1,5 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { DataserviceService } from './services/dataservice.service';
+import { WebsocketService } from './services/websocket.service';
+import { ChatService } from './services/chat.service';
 
 
 @Component({
@@ -7,12 +9,12 @@ import { DataserviceService } from './services/dataservice.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent  implements OnInit {
   title = 'check';
 
           loginbtn:boolean;
           logoutbtn:boolean;
-          constructor(private dataService: DataserviceService) {
+          constructor(private dataService: DataserviceService, public wsService: WebsocketService, public chatService: ChatService) {
             dataService.getLoggedInName.subscribe(nombres => this.changeName(nombres));
             if(this.dataService.isLoggedIn())
             {
@@ -37,5 +39,11 @@ export class AppComponent {
           window.location.href = window.location.href;
         }
 
+
+        ngOnInit(){
+          this.chatService.getMessagesPrivate().subscribe( msg =>{
+            console.log(msg);
+          });
+        }
 
 }

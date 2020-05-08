@@ -14,7 +14,7 @@ export class PeriodicidadService {
   constructor(private httpClient: HttpClient) {}
 
   altaRegistrochecks(datoregistro) {
-      console.log(JSON.stringify(datoregistro));
+      // console.log(JSON.stringify(datoregistro));
       return this.httpClient.post(`${this.PHP_API_SERVER}/ajax/periodicidad_crear.php`, JSON.stringify(datoregistro));
   }
 

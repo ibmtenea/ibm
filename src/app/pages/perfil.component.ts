@@ -156,6 +156,13 @@ export class PerfilPersona implements OnInit{
 
   guardarregistro( ){
     console.log(this.registro);
+    //eliminamos del local storage el id_rol siempre y cuando lo hayamos cambiado
+    //y lo volvemos a cambiar por el nuevo
+    // if(this.registro.id_rol!=''){
+    //   localStorage.removeItem('id_rol');
+    //   localStorage.setItem('id_rol',this.registro.id_rol);
+    // }
+
     if(
       this.registro.nombres=='' || 
       this.registro.telefono=='' || 

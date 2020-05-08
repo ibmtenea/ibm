@@ -2,11 +2,14 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {Issue} from '../models/issue';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import { Constantes } from '../models/constantes.model';
 
 @Injectable()
 export class DataService {
 
-  private readonly API_URL = 'http://joraco.site:8081/b/ajax/registro_read.php';
+
+  private PHP_API_SERVER = Constantes.API_SERVER; //URL del servicio
+
 
   dataChange: BehaviorSubject<Issue[]> = new BehaviorSubject<Issue[]>([]);
   
@@ -25,7 +28,7 @@ export class DataService {
 
   /** CRUD METHODS */
   getAllIssues(): void {
-    this.httpClient.get<Issue[]>(this.API_URL).subscribe(data => {
+    this.httpClient.get<Issue[]>(`${this.PHP_API_SERVER}/ajax/registro_read.php`).subscribe(data => {
         this.dataChange.next(data);
       },
       (error: HttpErrorResponse) => {

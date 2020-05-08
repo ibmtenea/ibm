@@ -1,0 +1,8 @@
+{
+
+    "/api/*":{
+        "target": "http://joraco.site:8081",
+        "secure": false,
+        "logLevel": "debug"
+    }
+}

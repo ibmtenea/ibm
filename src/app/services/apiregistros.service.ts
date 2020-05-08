@@ -13,18 +13,17 @@ export class ApiService {
   constructor(private httpClient: HttpClient) {}
 
   altaRegistro(datoregistro) {
-      console.log(JSON.stringify(datoregistro));
+     console.log(JSON.stringify(datoregistro));
       return this.httpClient.post(`${this.PHP_API_SERVER}/ajax/registro_crear.php`, JSON.stringify(datoregistro));
   }
 
   modiRegistro(datos){
-   
+    //console.log(JSON.stringify(datos));
     return this.httpClient.post(`${this.PHP_API_SERVER}/ajax/registro_update.php`, datos);   
   
   }
 
   delete(datosborrado){
-    console.log(datosborrado);
     return this.httpClient.post(`${this.PHP_API_SERVER}/ajax/registro_borrado.php`,datosborrado);
   }
 

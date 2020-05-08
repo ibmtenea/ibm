@@ -29,6 +29,7 @@ export class HeaderComponent {
 
         Logout() {
             localStorage.removeItem('token');
+            localStorage.removeItem('id_rol');
             localStorage.removeItem('id_persona');
             const redirect = this.dataService.redirectUrl ? this.dataService.redirectUrl : '/login';
                         this.router.navigate([redirect]);

@@ -168,7 +168,7 @@ export class AccionComponent implements OnInit {
     Swal.fire({
       text: 'Periodicidad actualizada',
       icon: 'success',
-      showConfirmButton: false
+      showConfirmButton: true
     })
     //, this.recarga()
     ;

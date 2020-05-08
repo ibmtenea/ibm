@@ -14,6 +14,10 @@ export class TurnosService {
   constructor(private httpClient: HttpClient) {}
 
 
+  guardarTurno(datosturnos){  
+    return this.httpClient.post(`${this.PHP_API_SERVER}/ajax/turno_crear.php`, datosturnos);
+  }
+
   //obtener rol persona 
   getUserId( id_persona ){
     return this.httpClient.get(`${ this.PHP_API_SERVER}/ajax/personas_detalle.php?id_persona=${ id_persona }`);

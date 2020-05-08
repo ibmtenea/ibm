@@ -11,5 +11,5 @@ export class Issue {
   flag_visibilidad: string;
   prioridad: string;
   decidecategoria: string;
-
+id_rol: string;
 }

@@ -76,6 +76,28 @@
 
         
     
+<div class="form-group">
+         
+            <label for="id_rol">Rol</label>
+            <select
+              required
+              style="background-color: white;"
+              class="form-control form-control-sm"
+              name="id_rol"
+              placeholder="Seleccione categoria"
+              #id_rol="ngModel"
+              [(ngModel)]="datoregistro.id_rol"
+            >
+              <option [ngValue]="null">Seleccione Rol</option>
+              <option
+                *ngFor="let rol of roles"
+                value="{{ rol.id_rol }}"
+              >
+                {{ rol.rol_name }}
+              </option>
+            </select>
+</div> 
+
 <!-- <div class="form-group">
          
             <label for="id_categoria">Categoría</label>
@@ -97,8 +119,6 @@
               </option>
             </select>
 </div> -->
-
-
 
 
     

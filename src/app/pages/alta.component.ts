@@ -62,7 +62,8 @@ export class AltaComponent {
         observaciones: null,
         id_categoria:  null,
         flag_visibilidad:  null,
-        prioridad:  null
+        prioridad:  null,
+        id_rol:null
     }
 
   @ViewChild(DatatableComponent, { static: false }) table: DatatableComponent;
@@ -122,7 +123,7 @@ export class AltaComponent {
             icon: 'success',  
             showConfirmButton : true
           })
-         // ,this.recarga()
+          ,this.recarga()
           ;      
         });
     }

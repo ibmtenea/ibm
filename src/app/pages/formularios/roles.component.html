@@ -1,0 +1,110 @@
+
+<div class="rol">
+    <div class="col-12 alert bg-dark text-white">
+        <div class="row">
+            <div class="col-9"><h4>Roles - Cree o edite roles con nivel de acceso</h4></div>
+            <div class="col-3 text-right"><a (click)="openroles(content)" class="altaseguimientow" alt="Añadir rol" title="Añadir rol"><i class="fa fa-plus fa-1"></i></a></div>
+        </div>
+    </div>
+</div>
+<div class="rol">
+    <div class="col-12 alert p-0 m-0">
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th>Nivel</th>
+                    <th>Nombre Rol</th>
+                    <th>Descripción</th>
+                    <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let rol of roles">
+                        <td>{{ rol.rol_level }}</td>
+                        <td>{{rol.rol_name}}</td>
+                        <td>{{ rol.roldescripcion }}</td>
+                        <td>              
+                        <span *ngIf="rol.id_rol != 8 &&  rol.id_rol != 7 &&  rol.id_rol != 6 && rol.id_rol != 5 &&  rol.id_rol != 4 && rol.id_rol != 3 && rol.id_rol != 2 && rol.id_rol != 1 ">
+                        <a
+                            alt="Eliminar rol"
+                            title="Eliminar rol"
+                            (click)="eliminarrol(rol, i)"
+                            class="altaseguimiento"
+                            ><i class="fa fa-trash"></i
+                        ></a>
+                        </span>  
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        Nuevo Rol
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <input
+          name="id_persona_log"
+          type="hidden"
+          #id_persona_log="ngModel"
+          [(ngModel)]="datosformulario.id_persona_log"
+        />
+        <label for="rol_name">Asigne un nombre al Rol</label>
+        <input
+        name="rol_name"
+        type="text"
+        #rol_name="ngModel"
+        class="form-control  mb-2"
+        [(ngModel)]="datosformulario.rol_name"
+        />
+        <p>Seleccione el nivel de acceso de este nuevo rol</p>
+        <div class="input-group">
+          <select
+            required
+            style="background-color: white;"
+            class="form-control form-control-sm mb-2"
+            name="rol_level"
+            placeholder="Seleccione nivel"
+            #rol_level="ngModel"
+            [(ngModel)]="datosformulario.rol_level"
+          >
+            <option [ngValue]="null">Seleccione nivel</option>
+            <option
+              *ngFor="let rolarray of roles"
+              value="{{ rolarray.rol_level }}">
+            {{ rolarray.rol_level }} - {{ rolarray.roldescripcion }}
+            </option>
+          </select>
+        </div>
+        <p
+        >Breve descripción</p>
+        <div class="input-group">
+            <textarea rows="2" 
+            required 
+            class="form-control  mb-2" 
+            maxlength="45"
+            name="roldescripcion" 
+            #roldescripcion="ngModel" 
+            [(ngModel)]="datosformulario.roldescripcion"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button (click)="guardarNuevoRol()" class="btn btn-info">
+        Añadir Rol
+      </button>
+    </div>
+  </ng-template>

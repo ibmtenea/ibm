@@ -18,25 +18,39 @@
     </div>
   </div>
 
-  <form (ngSubmit)="guardarregistro(f)" #f="ngForm">
+  
     <div class="row m-2 mt-4">
       <div class="col-md-12">
         <div class="alert linealbase">
-          {{ "txtCreado" | translate }}:
-          <em class="text-muted">{{
-            registro.fecha | date: "dd/MM/y HH:mm"
-          }}</em>
-          | {{ "txtUltimaModificacion" | translate }}:
-          <em class="text-muted" *ngIf="registro.fechamodi == null"
-            >nunca modificado</em
-          >
-          <em class="text-muted">{{
-            registro.fechamodi | date: "dd/MM/y HH:mm"
-          }}</em>
+
+
+
+
+<div class="row">
+  <div class="col-12">
+    {{ "txtCreado" | translate }}:
+    <em class="text-muted">{{
+      registro.fecha | date: "dd/MM/y HH:mm"
+    }}</em>
+    | {{ "txtUltimaModificacion" | translate }}:
+    <em class="text-muted" *ngIf="registro.fechamodi == null"
+      >nunca modificado</em
+    >
+    <em class="text-muted">{{
+      registro.fechamodi | date: "dd/MM/y HH:mm"
+    }}</em>
+  </div>
+
+</div>
+
+        
+        
+        
+        
         </div>
       </div>
     </div>
-
+    <form (ngSubmit)="guardarregistro(f)" #f="ngForm">
     <div class="row m-2 mt-4">
       <div class="col-md-7 alturaminima mb-5">
         <input
@@ -106,7 +120,7 @@
               ></ngx-material-timepicker>
             </div>
           </div>
-          <div class="col-md-4">
+          <!-- <div class="col-md-4">
             <div class="form-group">
               <label for="estatus">
                 {{ "txtStatus" | translate }}
@@ -128,8 +142,8 @@
                 <option value="PENDIENTE">PENDIENTE</option>
               </select>
             </div>
-          </div>
-          <div class="col-md-4">
+          </div> -->
+          <div class="col-md-8">
             <div class="form-group">
               <label for="id_categoria">Categoría</label>
               <select

@@ -1,0 +1,160 @@
+
+<div class="rol">
+    <div class="col-12 alert bg-dark text-white">
+        <div class="row">
+            <div class="col-9"><h4>Turnos - Añada o edite componentes de turnos para determinados roles</h4></div>
+            <div class="col-3 text-right"><a (click)="openturnos(content)" class="altaseguimientow" alt="Añadir turno" title="Añadir turno"><i class="fa fa-plus fa-1"></i></a></div>
+        </div>
+    </div>
+</div>
+<div class="rol">
+    <div class="col-12 alert p-0 m-0">
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th>Rol</th>
+                    <th>Nombre Turno</th>
+                    <th>Tipo</th>
+                    <th>Hora inicio</th>
+                    <th>Hora fin</th>
+                    <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let turno of turnos">
+                        <td>{{ turno.rol_name }}</td>
+                        <td>{{turno.turno}}</td>
+                        <td>{{turno.tipo_turno}}</td>
+                        <td>{{ turno.horainicio }}</td>
+                        <td>{{ turno.horafin }}</td>
+                        <td>              
+                        <span *ngIf="turno.id_turno > 34">
+                        <a
+                            alt="Eliminar Turno"
+                            title="Eliminar Turno"
+                            (click)="eliminarturno(turno, i)"
+                            class="altaseguimiento"
+                            ><i class="fa fa-trash"></i
+                        ></a>
+                        </span>  
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </div>
+</div>
+<div class="comod">
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        Nuevo Rol
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body ">
+      <div class="form-group">
+        <input
+          name="id_persona_log"
+          type="hidden"
+          #id_persona_log="ngModel"
+          [(ngModel)]="datosformularioturno.id_persona_log"
+        />
+        <p>Asigne un nombre al Turno</p>
+        <input
+        name="turno"
+        type="text"
+        #turno="ngModel"
+        class="form-control  mb-2"
+        [(ngModel)]="datosformularioturno.turno"
+        />
+        <p>Asigne un rol al turno</p>
+        <div class="input-group">
+          <select
+            required
+            style="background-color: white;"
+            class="form-control form-control-sm mb-2"
+            name="id_rol"
+            placeholder="Seleccione rol"
+            #id_rol="ngModel"
+            [(ngModel)]="datosformularioturno.id_rol"
+          >
+            <option [ngValue]="null">Seleccione rol</option>
+            <option
+              *ngFor="let rolarray of roles"
+              value="{{ rolarray.id_rol }}">
+               {{ rolarray.rol_name }}
+            </option>
+          </select>
+        </div>
+        <p>Asigne un tipo de turno</p>
+        <div class="input-group">
+          <select
+            required
+            style="background-color: white;"
+            class="form-control form-control-sm mb-2"
+            name="tipo_turno"
+            placeholder="Seleccione tipo de turno"
+            #tipo_turno="ngModel"
+            [(ngModel)]="datosformularioturno.tipo_turno"
+          >
+            <option [ngValue]="null">Seleccione tipo turno</option>
+            <option value="entre semana">entre semana</option>
+            <option value="fin semana">fin semana</option>
+          </select>
+        </div>
+        <p>Hora inicio</p>
+        <input
+            name="horainicio"
+            type="text"
+            id="reloj"
+            placeholder="00:00"
+            #horainicio="ngModel"
+            class="form-control  mb-2"
+            [(ngModel)]="datosformularioturno.horainicio"
+            pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+            minlength="5"
+            maxlength="5"
+            [ngxTimepicker]="fullTime"
+            [format]="24"
+            readonly
+        />    <ngx-material-timepicker
+        #fullTime
+        [minutesGap]="30"
+      ></ngx-material-timepicker>
+        <p>Hora fin</p>
+        <input
+            name="horafin"
+            type="text"
+            id="reloj"
+            placeholder="00:00"
+            #horafin="ngModel"
+            class="form-control  mb-2"
+            [(ngModel)]="datosformularioturno.horafin"
+            pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+            minlength="5"
+            maxlength="5"
+            [ngxTimepicker]="fullTimeFin"
+            [format]="24"
+            readonly
+        />
+        <ngx-material-timepicker
+        #fullTimeFin
+        [minutesGap]="30"
+      ></ngx-material-timepicker>
+       
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button (click)="guardarNuevoTurno()" class="btn btn-info">
+        Añadir Turno
+      </button>
+    </div>
+  </ng-template>
+</div>

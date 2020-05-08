@@ -17,19 +17,53 @@ h3{font-family: 'Roboto', sans-serif;font-weight:900;margin-bottom: 15px;}
   *
   */
 
-  .accordion-icons .card-header a:before {
+  .ovefr{
+max-height:402px;
+overflow-y: auto;
+
+  }
+
+  a.altaseguimientow{ color:#ffffff;}
+  a:hover.altaseguimientow{ color:#0c4650;}
+
+.timepicker  {
+    z-index:9999 !important;
+}
+.modal  {
+  z-index:99 !important;
+}
+.modal-backdrop{
+  z-index:98 !important;
+}
+
+  .petittext{font-size:11px;}
+  .accordion-icons .card-header  .botona  a:before {
 
     font-weight:900;
     content:"-";font-size:33px;padding:0px;margin:0px;
  
   }
-  .accordion-icons .card-header a.collapsed:before {
+  .accordion-icons .card-header  .botona  a.collapsed:before {
     font-weight:900;font-size:28px;padding:0px;margin:0px;
     content:"+";
   }
-  .accordion-icons .card-header a:hover, 
-  .accordion-icons .card-header a:active, 
-  .accordion-icons .card-header a:focus  {
+  .accordion-icons .card-header .botona  a:hover, 
+  .accordion-icons .card-header .botona  a:active, 
+  .accordion-icons .card-header .botona  a:focus  {
+      text-decoration:none;
+  }
+
+
+
+  .accordion-icons .card-header  .botonb  a:before {
+
+    font-weight:900;
+    content:"x";font-size:22px;padding:0px;margin:0px;
+  }
+
+  .accordion-icons .card-header .botonb  a:hover, 
+  .accordion-icons .card-header .botonb  a:active, 
+  .accordion-icons .card-header .botonb  a:focus  {
       text-decoration:none;
   }
 
@@ -51,7 +85,7 @@ h3{font-family: 'Roboto', sans-serif;font-weight:900;margin-bottom: 15px;}
     position: relative;
     z-index: 9999;
     left:15%;
-    bottom:80px;
+    bottom:100px;
     transition: box-shadow 200ms cubic-bezier(0, 0, 0.2, 1);
     -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.37);
     -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.37);
@@ -774,3 +808,34 @@ button {outline:0 !important; -webkit-tap-highlight-color: rgba(0,0,0,0); }
   .components{
       padding-left: 10px;
   }
+
+
+  /*
+  *
+  * ==========================================
+  * DROPZONE
+  * ==========================================
+  *
+  */
+
+
+  .dropzone{
+    width:450px;
+    height:200px;
+    padding:2rem;
+    text-align:center;
+    border: dashed 1px #979797;
+    position:relative;
+    margin: 0 auto;
+  }
+#imagenincidencia input {
+opacity:0;
+position: absolute;
+z-index:2;
+width:100%;
+height: 100%;
+top:0;left:0
+
+}
+
+

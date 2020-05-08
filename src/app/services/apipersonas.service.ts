@@ -51,12 +51,11 @@ export class ApiPersonas {
 
   modiRegistro(datos){
     console.log(datos);
-    return this.httpClient.post(`${this.PHP_API_SERVER}/ajax/registro_update.php`, datos);   
+    return this.httpClient.post(`${this.PHP_API_SERVER}/ajax/registro_update_personas.php`, datos);   
   
   }
   
   delete(datosborrado){
-    console.log(datosborrado);
     return this.httpClient.post(`${this.PHP_API_SERVER}/ajax/personas_borrado.php`,datosborrado);
   }
 
