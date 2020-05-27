@@ -55,6 +55,9 @@ export class DetalleService {
         }
 
 
+
+
+
         delete(datosborrado){
             return this.http.post(`${this.PHP_API_SERVER}/ajax/registro_seguimiento_borrado.php`,datosborrado);
           }

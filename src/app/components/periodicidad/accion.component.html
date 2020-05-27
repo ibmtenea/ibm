@@ -74,7 +74,9 @@
               <div class="row mt-3">
                 <div class="col-6  minitext">
 
-
+                  <!-- <li> 
+                     <input type="checkbox" formControlMode="selectedAll" (change)="selectAll();"/> 
+                  </li> -->
 
                   <div *ngFor="let dias of diasSemana; let i=index">
                     <div class="row"><div class="col-8">{{dias.name}}</div><div class="col-4">
@@ -85,8 +87,7 @@
                     </div>
                   </div>
                   </div>
-
-               
+            
                 </div>
                 <div class="col-6  minitext">
                   <div *ngFor="let tramos of tramosSemana; let i=index">
@@ -223,7 +224,6 @@
     }
   });
   </script>
-
 
 
 

@@ -12,6 +12,12 @@ export class ApiService {
 
   constructor(private httpClient: HttpClient) {}
 
+
+  
+  getLastId() {
+  return this.httpClient.get(`${ this.PHP_API_SERVER}/ajax/last_id.php`)
+  }
+
   altaRegistro(datoregistro) {
      console.log(JSON.stringify(datoregistro));
       return this.httpClient.post(`${this.PHP_API_SERVER}/ajax/registro_crear.php`, JSON.stringify(datoregistro));

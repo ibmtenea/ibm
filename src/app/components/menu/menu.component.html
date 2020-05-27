@@ -31,7 +31,7 @@
           <em>{{ user.rol_name }}</em>
         </p>
         
-        <a [routerLink]="['/', 'perfil', '1']" class="text-light">
+        <a [routerLink]="['/', 'perfil', user.id_persona]" class="text-light">
           <i class="fa fa-user mr-1  fa-1g"></i> <small>{{ "txtProfile" | translate }}</small>
         </a>
       </div>
@@ -104,7 +104,12 @@
         Listado de componentes
       </a>
     </li>
-
+    <li class="nav-item" routerLinkActive="active">
+      <a [routerLink]="['/', 'incidencias']" class="nav-link ">
+        <i class="fa fa-cog mr-3  fa-fw"></i>
+        Incidencias
+      </a>
+    </li>
 
 
     <li class="nav-item" routerLinkActive="active">

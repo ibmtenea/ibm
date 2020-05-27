@@ -14,7 +14,12 @@ export class TurnosService {
   constructor(private httpClient: HttpClient) {}
 
 
+  guardarTurnoGhost(datosturnos){  
+    return this.httpClient.post(`${this.PHP_API_SERVER}/ajax/turno_ghost_crear.php`, datosturnos);
+  }
+
   guardarTurno(datosturnos){  
+
     return this.httpClient.post(`${this.PHP_API_SERVER}/ajax/turno_crear.php`, datosturnos);
   }
 

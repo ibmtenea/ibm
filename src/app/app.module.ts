@@ -61,6 +61,7 @@ import {JpImagePreloadModule} from '@jaspero/ng-image-preload';
 import { PerfilPersona } from './pages/perfil.component';
 import { AyudaComponent } from './components/ayuda/ayuda.component';
 import { ElegirTurno } from './pages/turnos/elegir.component';
+import { HomeGetComponent } from './pages/turnos/homeget.component';
 import { FlotanteComponent } from './components/flotante/flotante.component';
 import { MensajesComponent } from './pages/mensajes/mensajes.component';
 import { ListaUsuariosComponent } from './components/lista-usuarios/lista-usuarios.component';
@@ -75,7 +76,9 @@ import { RolesFormComponent } from './pages/formularios/roles.component';
 import { TurnosFormComponent } from './pages/formularios/turnos.component';
 import { ListadosComponent } from './pages/formularios/listados.component';
 import { AbririncidenciaComponent } from './pages/abririncidencia.component';
-
+import { IncidenciasComponent } from './pages/formularios/incidencias.component';
+import { IncidenciadetalleComponent } from './pages/formularios/incidenciadetalle.component';
+import { NgxSpinnerModule } from "ngx-spinner";
 const config: SocketIoConfig = { url: environment.wsUrl, options: {} };
 
 registerLocaleData(localeEs, 'es');
@@ -94,6 +97,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MensajesComponent,
     IdentificacionComponent,
     AppComponent,
+    HomeGetComponent,
     HistoricoMiniComponent,
 CheckComponent,
     HomeComponent,
@@ -123,13 +127,16 @@ RolesFormComponent,
 TurnosFormComponent,
 ConfiguracionGeneralComponent,
 ListadosComponent,
-AbririncidenciaComponent
+AbririncidenciaComponent,
+IncidenciasComponent,
+IncidenciadetalleComponent
     
 
  
   ],
   imports: [
     BrowserModule,
+    NgxSpinnerModule,
     BrowserAnimationsModule,
     HttpClientModule,
     DragDropModule,

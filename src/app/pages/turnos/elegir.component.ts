@@ -1,34 +1,54 @@
-import { Component, Input, OnInit } from '@angular/core';
-  
-import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import { AyudaService } from '../../services/ayuda.service';
-import { HttpClient } from '@angular/common/http';
-import { Ayuda } from '../../models/ayuda';
-import { Constantes } from '../../models/constantes.model';
-import { Turnos } from '../../models/turnos';
-import { TurnosService } from '../../services/turnos.service';
-import { Personas } from '../../models/personas';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormControl, Validators, FormBuilder, NgForm , FormsModule} from '@angular/forms';
-import { SharedService } from '../../services/serviciocompartido.service';
+import { Component, ViewChild } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ApiService } from '../../services/apiregistros.service';
+import { Issue } from '../../models/issue';
+import { DatatableComponent } from '@swimlane/ngx-datatable';
+import { ColumnMode } from '@swimlane/ngx-datatable';
 import Swal from 'sweetalert2';
+import { Constantes } from '../../models/constantes.model';
+import { TranslateService } from '@ngx-translate/core';
+import { DetalleService } from '../../services/detalle.service';
+import { Turnos } from '../../models/turnos';
+import { Personas } from '../../models/personas';
 import { ApiPersonas } from '../../services/apipersonas.service';
+import { FormGroup, FormControl, NgForm } from '@angular/forms';
+import { TurnosService } from '../../services/turnos.service';
 
 
-  
 @Component({
   selector: 'app-elegirturno',
   templateUrl: './elegir.component.html'
 })
 
 
-
-export class ElegirTurno  implements OnInit {
-
-  userPersona: Personas = new Personas();
-  userTurnos: Turnos = new Turnos();
-  listaturnos: Turnos[] = [];
-  selectedOption;
+export class ElegirTurno  {
+  isSubmitted = false;
+  // listaturnos: Turnos[] = [];
+ public listaturnos: Turnos;
+  turnoValor = localStorage.getItem('valorTurno');
+  personas: Issue[] = [];
+  issue: Issue = new Issue();
+  editing = {};
+  rows = [];
+  temp = [];
+  private PHP_API_SERVER = Constantes.API_SERVER; //URL del servicio
+  //registroroleperson:Personas = new Personas();
+  registroroleperson: Turnos = new Turnos();
+  numero: number;
+  final: Observable<Object>;
+  dregistro = null;
+  datoregistro = {
+    id_tarea: null,
+    rol_name: null,
+    tarea: null,
+    issueg: null,
+    hora: null,
+    hour: null,
+    estatus: null,
+    status: null,
+    observaciones: null
+  }
 
   reactiveFormTurnos = new FormGroup({
     id_turno: new FormControl(''),
@@ -36,137 +56,142 @@ export class ElegirTurno  implements OnInit {
 
   });
 
-  private PHP_API_SERVER = Constantes.API_SERVER; //URL del servicio
-  datosturnos = {
-    id_persona: localStorage.getItem('id_persona'),
-    id_turno: localStorage.getItem('valorTurno')
-  }
-  id_rol: string;
-
-
-  registroroleperson:Personas = new Personas();
-  turnoactivo = localStorage.getItem('valorTurno');
-  isSubmitted = false;
-  valor: boolean;
-  id_persona: string;
-
+  @ViewChild(DatatableComponent, { static: false }) table: DatatableComponent;
+  ColumnMode = ColumnMode;
+  campo: any;
+  id_tarea: any;
+  rol_name: any;
+  id_persona: any;
+  valor: any;
+  ever: any;
+  datos: string;
+  datosborrado: string;
+  datosclon: string;
   periodetalle: Turnos = new Turnos();
-  //periodetalle: Turnos[] = [];
-  turno: any;
+  my_messages = {
+    'emptyMessage': '',
+    'totalMessage': ''
+  };
+  req: any;
 
-  constructor(
-    private formbuilder: FormBuilder,
-    private httpClient: HttpClient, 
-    private servicioCompartido: SharedService, 
-    private activatedRoute: ActivatedRoute, 
-    private turnosService: TurnosService,
-    private router: Router,
-    private registroRoleService: ApiPersonas
-    ) {
-    // this.reactiveFormTurnos.controls['id_turno'].valueChanges.subscribe((state: any) => {
+  turnoestablecido:Turnos = new Turnos();
 
-    //   id_turno: ['', [Validators.required]];
 
-    //   console.log(state);
-    // });
+
+  constructor(private turnosService: TurnosService,private registroRoleService: ApiPersonas, private translate: TranslateService, private httpClient: HttpClient, private registroService: DetalleService, private apiService: ApiService) {
+
+    translate.get('Total', { value: 'eeeeeeeeee' })
+      .subscribe((res: string) => this.my_messages.totalMessage = res);
+    translate.get('No hay resultados para mostrar', { value: '' })
+      .subscribe((res: string) => this.my_messages.emptyMessage = res);
+
+   
+
+
+
+
+
+
+
 
   }
-  
 
-    // loadFuncionBoxTurnos(id_persona){
-    //     if(localStorage.getItem('valorTurno')==null){
-    //             //consultamos la bbdd
-    //             this.httpClient.get<any[]>(this.PHP_API_SERVER + `/ajax/turnos_read_by__id_persona.php?id_persona=${ id_persona }` )
-    //             .subscribe(  (result:any) => {
-    //               this.periodetalle = result;
-    //               this.selectedOption = this.periodetalle.id_turno;
-    //             }, error => console.error(error));
-    //       } else {
-    //         this.selectedOption = localStorage.getItem('valorTurno');
-    //       }
-    // }
+  //el ngoninit nos servira para recargar en caso de error de validacion
+  ngOnInit() {
 
-  ngOnInit(){
+    this.fetch(data => {
+      this.temp = [...data];
+      this.rows = data;
 
+    });
 
-    const id_persona = localStorage.getItem('id_persona');
-    this.registroRoleService.getPerson ( id_persona )
-      .subscribe( (respuesta:Personas) => {
-         this.registroroleperson = respuesta;
-         this.registroroleperson.id_persona =   id_persona;
-
-      });
-    // si no recibimos ningún id_turno_persona asociado a este usuario
-    // siendo este el último por fecha
-    // recogemos selectedoption del dato almacenado en localstorage
-    // porque supone que se acaba de elegir por primera vez y aún no se ha almacenado
-    //this.loadFuncionBoxTurnos(id_persona);
-
-    //obtener el rol de este id_persona
-        this.turnosService.getUserId ( id_persona )
-        .subscribe( (respuesta:Personas) => {
-          this.userPersona = respuesta; 
-          this.id_rol = this.userPersona.id_rol;
-
-          
-              //cargamos los turnos solamente para este id_rol e id_persona para elegirlos
-              this.httpClient.get<any[]>(this.PHP_API_SERVER + `/ajax/turnos_read_by_rol.php?id_rol=${ this.id_rol }`)
-              .subscribe(result => {
-                  this.listaturnos = result;
+    // //verificar  id_usuario y id_rol
+    // const id_persona = localStorage.getItem('id_persona');
+    // this.registroRoleService.getPerson(id_persona)
+    //   .subscribe((respuesta: Personas) => {
+    //     this.registroroleperson = respuesta;
+    //     this.registroroleperson.id_persona = id_persona;
+       
+    //   });
 
 
-                if(localStorage.getItem('valorTurno')==null){
-
-
-
-                  
-                  this.httpClient.get<any[]>(this.PHP_API_SERVER + `/ajax/turnos_read_by__id_persona.php?id_persona=${ id_persona }` )
-                  .subscribe(  (result:any) => {
-                    this.periodetalle = result;
-                    this.selectedOption = this.periodetalle.id_turno;
-                  }, error => console.error(error));
-                } else {
-                  this.selectedOption = localStorage.getItem('valorTurno');
-                }
-
-              }, error => console.error(error));
-        });
   }
 
-
-
-
-  get myForm() {
-    return this.reactiveFormTurnos.get('id_turno');
-  }
-
+  //reload pagina al usar sweet alerts etc
   recarga() {
     location.reload();
   }
 
-  onSubmitSelect() { 
-      this.isSubmitted = true;
-      const valor = JSON.stringify(this.reactiveFormTurnos.value);
-        localStorage.setItem('valorTurno', this.reactiveFormTurnos.value.id_turno);
-        this.servicioCompartido.sendClickEvent (); 
-
-        this.recarga();
-  }
 
 
-  onSubmit(form: NgForm) { 
+
+
+  //cargamos el listado
+  fetch(cb) {
+
+
+      const req = new XMLHttpRequest();
+      const id_persona = localStorage.getItem('id_persona');
+
+
+
+      //OBTENER EL ULTIMO TURNO DE ESTE USUARIO
+      this.registroRoleService.getTurnosbyID(id_persona)
+      .subscribe((respuesta: Turnos) => {
+        this.registroroleperson = respuesta;
+        this.registroroleperson.id_persona = id_persona;
+       
+            //leemos los turnos del rol del usuario actual para mostrarlos en el select combo
+            var id_rol:string;
+            if(this.registroroleperson.id_rol==null){
+              var id_rol = localStorage.getItem('id_rol');
+        
+            } else {
+              var id_rol = Constantes.CRND+this.registroroleperson.id_rol+Constantes.DRND;
+
+            }
+
+
+
+            this.registroRoleService.getTurnosReadByRol(id_rol)
+            .subscribe( (respuesta:Turnos) => {
+              this.listaturnos = respuesta;
+            });
+
+
+
+
+
+            req.open('GET', `${this.PHP_API_SERVER}/ajax/registro_read_by_persona.php?id_persona=${id_persona}`);
+            req.onload = () => {
+              cb(JSON.parse(req.response));
+            };
+            req.send();
+          
+      });
+
+
+
+
+
+    }
+
+
+
+
+ onSubmit(form: NgForm) { 
     
       this.isSubmitted = true;
       const valor = JSON.stringify(this.reactiveFormTurnos.value);
-
+console.log(valor);
       this.turnosService.guardarTurno( valor ).subscribe( respuesta => {
         localStorage.removeItem('valorTurno');
         Swal.fire({
           title: 'Turno Establecido',
           text: 'El turno ha sido establecido',
           icon: 'success',  
-          showConfirmButton : true
-        });
+          showConfirmButton : false
+        }), this.recarga();
         
       });   
       
@@ -177,11 +202,168 @@ export class ElegirTurno  implements OnInit {
 
 
 
+  //alta de registro
+  altaRegistro() {
+    //si los campos obligatorios nos llegan vacios
+    if (this.datoregistro.tarea == null || this.datoregistro.hora == null || this.datoregistro.estatus == null) {
+      Swal.fire({
+        title: 'Revise los datos',
+        text: 'Los campos no pueden estar vacíos!!',
+        icon: 'error',
+      });
+    } else {
+      //enviamos el array a la funcions del server
+      this.apiService.altaRegistro(this.datoregistro).subscribe(
+        datos => {
+          Swal.fire({
+            title: this.datoregistro.tarea,
+            text: 'Registro añadido',
+            icon: 'success',
+            showConfirmButton: false
+          }), this.recarga();
+        });
+    }
+  }
+
+  //actualización campos inline
+  updateValue(event, cell, rowIndex) {
+    this.editing[rowIndex + '-' + cell] = false;
+    this.rows[rowIndex][cell] = event.target.value;
+    this.rows = [...this.rows];
+    this.campo = cell;
+    this.id_tarea = event.target.title;
+    const id_persona = localStorage.getItem('id_persona');
+    this.valor = event.target.value;
+    this.ever = id_persona, this.campo, this.id_tarea, this.valor;
+    this.datos = JSON.stringify({ "id_persona": id_persona, "campo": this.campo, "id_tarea": this.id_tarea, "valor": this.valor });
+
+    //validacion del formato de la hora
+    var patronHora = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+    var horaResult = patronHora.test(this.valor);
+
+    //si el campo que recibo es hora...
+    if (this.campo == "hora") {
+      //...valido su formato
+      if (horaResult == false) {
+        Swal.fire({
+          title: 'Revise los datos',
+          text: 'El campo "hora" debe de cumplir con los requerimientos!!',
+          icon: 'error',
+        });
+        this.ngOnInit();
+      }
+      // else {
+      //   Swal.fire({
+      //     text: 'Registro actualizado',
+      //     icon: 'success',  
+      //     showConfirmButton : false
+      //   })
+      // }
+    }
+    //el campo que recibo es tarea pero es menor de 3 caracteres
+    else if (this.campo == "tarea" && this.valor.length < 3) {
+
+      Swal.fire({
+        title: 'Revise los datos',
+        text: 'El campo "tarea" debe contener como mínimo tres carácteres!!',
+        icon: 'error',
+      });
+      this.ngOnInit();
+
+    } else {
+      //todo Ok llamo al servicio
+      this.apiService.modiRegistro(this.datos).subscribe(
+        datos => {
+          Swal.fire({
+            text: 'Registro actualizado',
+            icon: 'success',
+            showConfirmButton: false
+          }), this.recarga();
+
+        });
+    }
+
+  }
+
+
+
+  duplicar(registro: Issue, i: string) {
+
+    Swal.fire({
+      title: `¿Desea crear una tarea a partir de esta?`,
+      text: 'Confirme si desea proceder',
+      icon: 'question',
+      showConfirmButton: true,
+      showCancelButton: true
+
+    }).then(orden => {
+      if (orden.value) {
+
+        const id_persona = localStorage.getItem('id_persona');
+        this.datosclon = JSON.stringify({ "id_persona": id_persona, "id_tarea": registro.id_tarea });
+
+        let peticion: Observable<any>;
+
+        peticion = this.registroService.actualizarRegistroNuevaId(this.datosclon);
+        peticion.subscribe(respuesta => {
+          Swal.fire({
+            title: this.id_tarea,
+            text: 'Registro duplicado',
+            icon: 'success',
+            showConfirmButton: true
+          })
+            , this.recarga();
+
+        });
+      }
+    });
+  }
 
 
 
 
 
+  //eliminar registro      
+  borrarRegistro(registro: Issue, i: string) {
+
+    Swal.fire({
+      title: `¿Desea borrar el registro ${registro.tarea}`,
+      text: 'Confirme si desea borrar el registro',
+      icon: 'question',
+      showConfirmButton: true,
+      showCancelButton: true
+
+    }).then(respuesta => {
+      if (respuesta.value) {
+        const id_persona = localStorage.getItem('id_persona');
+        this.datosborrado = JSON.stringify({ "id_persona": id_persona, "id_tarea": registro.id_tarea });
+        this.apiService.delete(this.datosborrado).subscribe();
+
+        Swal.fire({
+          title: registro.tarea,
+          text: 'Registro eliminado',
+          icon: 'success',
+          showConfirmButton: false
+        })
+          , this.recarga();
+
+      }
+    });
+  }
+
+
+
+  //actualizacion filtro busqueda
+  updateFilter(event) {
+    const val = event.target.value.toLowerCase();
+    const temp = this.temp.filter(function (d) {
+      return d.rol_name.toLowerCase().indexOf(val) !== -1 || d.tarea.toLowerCase().indexOf(val) !== -1 || d.hora.toLowerCase().indexOf(val) !== -1 || d.estatus.toLowerCase().indexOf(val) !== -1 || !val;
+    });
+    // actualizamos las rows
+    this.rows = temp;
+    // Cuando cambie el filtro, regresa a la primera página.
+    this.table.offset = 0;
+  }
 
 
 }

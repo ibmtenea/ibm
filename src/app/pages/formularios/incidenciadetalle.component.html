@@ -1,0 +1,106 @@
+<div class="page-content" id="content">
+    <app-header></app-header>
+    <app-menu></app-menu>
+  
+    <div class="row m-2">
+      <div class="col-md-12 mt-4 tituloseccion">
+        <h3>Histórico de Logs</h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a [routerLink]="['/', 'home']">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              {{ registro.enunciado }} - #{{ registro.token_incidencia }}
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  
+  
+      <div class="row m-2 mt-4">
+        <div class="col-md-12">
+          <div class="alert linealbase">
+           Creada:
+            <em class="text-muted">{{
+              registro.fecha | date: "dd/MM/y HH:mm"
+            }}</em>
+            
+           
+          </div>
+        </div>
+      </div>
+  
+      <div class="row m-2 mt-4">
+        <div class="col-md-12 alturaminima mb-5">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                
+                 <h2 class="hachedosgrande"> {{ registro.enunciado }}              
+               <span *ngIf="registro.resuelta==='SI'" class="badge badge-success">
+                    
+                      Resuelta
+                    
+                </span>
+            </h2>
+                <h5 class="mb-2">Emitida por: <b>{{registro.nombres}}</b></h5>
+                <hr />
+                <p class="mt-3 mb-3">{{registro.textoincidencia}}</p>
+                 <hr />
+                <div *ngIf="registro.imagenincidencia!=''">
+                    <h5 class="mt-4 mb-2">Imagen adjunta</h5>
+                                    <img 
+                                    class="animate fadeIn mb-3" 
+                                    src="{{registro.imagenincidencia}}" 
+                                    jpPreload="{{registro.imagenincidencia}}"
+                                    alt="" />
+                    <hr /> 
+                </div>               
+              </div>
+            </div>
+          </div>
+
+  
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group text-center">
+<form [formGroup]="resolverSubmit" (ngSubmit)="onSubmit()" >  
+                <input
+                type="hidden"
+                class="form-control"
+                formControlName="id_incidencias"
+                />
+                <input
+                type="hidden"
+                class="form-control"
+                formControlName="token_incidencia"
+                />
+            <span *ngIf="registro.resuelta==='SI'">
+                <button disabled class="btn btn-success mr-2">
+                  Resuelta
+                </button> 
+            </span>
+            <span *ngIf="registro.resuelta!='SI'">
+                <button [disabled]="!resolverSubmit.valid" type="submit" class="btn btn-info mr-2">
+                  Resolver
+                </button> 
+            </span>
+                <button [routerLink]="['/incidencias']" class="btn btn-warning">
+                  {{ "txtVolver" | translate }}
+                </button>
+</form>             
+            </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+   
+  
+   
+  
+    <app-footer></app-footer>
+  </div>
+  

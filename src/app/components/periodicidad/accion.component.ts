@@ -52,7 +52,8 @@ export class AccionComponent implements OnInit {
   datosborrado: string;
   repeticiones: PeriodicidadMadre;
   fechafin: any;
-
+  selectedAll: any;
+  names: any;
   constructor(private fb: FormBuilder, private activatedRoute: ActivatedRoute, private httpClient: HttpClient, private perioService: PeriodicidadService) {
 
     //cargo los dias del mes en curso
@@ -100,16 +101,25 @@ export class AccionComponent implements OnInit {
   }
 
 
-
-
-
-
-
   ngOnInit() {
-
- this.cargaMadre();
-
+    this.cargaMadre();
   }
+
+
+
+ 
+  selectAll(e) {
+    if (this.diasSemana.every(val => val.checked == true)){
+      this.diasSemana.forEach(val => { val.checked = null });
+    } else {
+      this.diasSemana.forEach(val => { val.checked = true });
+    }
+  }
+
+  
+
+
+
 
 
   cargaMadre(){
@@ -138,8 +148,11 @@ export class AccionComponent implements OnInit {
   onCheckboxChange(e) {
     const checkArrayt: FormArray = this.accionForm.get('checkArrayt') as FormArray;
     if (e.target.checked) {
+
       checkArrayt.push(new FormControl(e.target.value));
+
     } else {
+
       let i: number = 0;
       checkArrayt.controls.forEach((item: FormControl) => {
         if (item.value == e.target.value) {
@@ -148,10 +161,16 @@ export class AccionComponent implements OnInit {
         }
         i++;
       });
+
       //quito el check y borro el registro 8no se aprecia porqu eno recarga la pagina)
       this.borrarRegistro(e.target.value);
     }
   }
+
+
+
+
+
 
   //reload pagina al usar sweet alerts etc
   recarga() {

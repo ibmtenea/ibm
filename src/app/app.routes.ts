@@ -1,49 +1,3 @@
-// import { RouterModule, Routes } from '@angular/router';
-// import { HomeComponent } from './pages/home.component';
-
-// import { NgModule } from '@angular/core';
-// import { AppComponent } from './app.component';
-// import { PerfilPage } from './pages/perfil.pages';
-// import { PersonasPage } from './pages/personas.pages';
-// import { ConfiguracionPage } from './pages/configuracion.pages';
-// import { DescargaPage } from './pages/descarga.pages';
-// import { HistoricoPage } from './pages/historico.pages';
- 
-// import { RegistroComponent } from './pages/registro/registro.component';
-// import { LoginComponent } from './pages/login/login.component';
-
-
-// const APP_ROUTES: Routes = [
-
-//  { path: 'home', component: HomeComponent},
-//  { path: 'historico', component: HistoricoPage },
-//  { path: 'descarga', component: DescargaPage },
-//  { path: 'configuracion', component: ConfiguracionPage },
-//  { path: 'personas', component: PersonasPage },
-// // { path: 'resultadopersonas/:termino', component: ResultadoPersonasComponent },
-// // { path: 'persona/:id', component: PersonaComponent },
-// { path: 'login'   , component: LoginComponent },
-// { path: 'registro', component: RegistroComponent },
-// { path: 'perfil', component: PerfilPage },
-// //{ path: '**', redirectTo: 'login' }
-// { path: '**',  redirectTo: '/registro'}    
-// ];
-
-// @NgModule({
-//     imports:[
-//         RouterModule.forRoot ( APP_ROUTES, {useHash:false})
-//     ],
-//     exports: [ RouterModule ]
-// })
-
-// export class AppRoutingModule {}
-// //CON HASH (??) export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES ,{useHash:true});
-// export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES);
-
-
-
-
-
 
 import { Routes} from '@angular/router';
 
@@ -71,22 +25,29 @@ import { RolesFormComponent } from './pages/formularios/roles.component';
 import { TurnosFormComponent } from './pages/formularios/turnos.component';
 import { ListadosComponent } from './pages/formularios/listados.component';
 import { AbririncidenciaComponent } from './pages/abririncidencia.component';
+import { HomeGetComponent } from './pages/turnos/homeget.component';
+import { IncidenciasComponent } from './pages/formularios/incidencias.component';
+import { IncidenciadetalleComponent } from './pages/formularios/incidenciadetalle.component';
 
 
 
 export const routes: Routes = [
   { path: 'ayuda' , component: AyudaComponent, canActivate: [ AuthguardGuard ] },
   { path: 'elegirturno' , component: ElegirTurno, canActivate: [ AuthguardGuard ] },
+  { path: 'homeget' , component: HomeGetComponent, canActivate: [ AuthguardGuard ] },
   { path: 'home' , component: HomeComponent, canActivate: [ AuthguardGuard ] },
   { path: 'alta' , component: AltaComponent, canActivate: [ AuthguardGuard ] },
   { path: 'personas' , component: PersonasPage, canActivate: [ AuthguardGuard ] },
   { path: 'perfil/:id_persona' , component: PerfilPersona, canActivate: [ AuthguardGuard ] },
+  { path: 'incidenciadetalle/:token_incidencia' , component: IncidenciadetalleComponent, canActivate: [ AuthguardGuard ] },
   { path: 'detallepersona/:id_persona' , component: DetallePersona, canActivate: [ AuthguardGuard ] },
   { path: 'historico' , component: HistoricoComponent, canActivate: [ AuthguardGuard ] },
   { path: 'detallehistorico/:id_log' , component: DetalleHistoricoComponent, canActivate: [ AuthguardGuard ] },
   { path: 'detalle/:id_tarea' , component: DetalleComponent, canActivate: [ AuthguardGuard ]},
   { path: 'formlistados' , component: ListadosComponent, canActivate: [ AuthguardGuard ]},
   { path: 'abririncidencia' , component: AbririncidenciaComponent, canActivate: [ AuthguardGuard ]},
+  { path: 'incidencias' , component: IncidenciasComponent, canActivate: [ AuthguardGuard ]},
+
   // { path: 'formroles' , component: RolesFormComponent, canActivate: [ AuthguardGuard ]},
   // { path: 'formturnos' , component: TurnosFormComponent, canActivate: [ AuthguardGuard ]},
   { path: 'configuraciongeneral' , component: ConfiguracionGeneralComponent, canActivate: [ AuthguardGuard ]},

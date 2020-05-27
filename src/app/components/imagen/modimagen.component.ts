@@ -38,7 +38,7 @@ export class ModimagenComponent implements OnInit {
         this.accionForm = this.fb.group({
 
           fotopersona: ['', Validators.required],
-          id_persona: this.activatedRoute.snapshot.paramMap.get('id_persona'),
+          id_persona: localStorage.getItem('id_persona'),
           id_persona_log: localStorage.getItem('id_persona'),
 
         });
@@ -54,7 +54,7 @@ export class ModimagenComponent implements OnInit {
   
 
   cargaMadre(){
-    const id_persona = this.activatedRoute.snapshot.paramMap.get('id_persona')
+    const id_persona = localStorage.getItem('id_persona')
     this.perioService.getFotografia(id_persona).subscribe( (respuesta: Personas) => {
     this.fotopersona = respuesta;
     //this.accionForm.controls['fechafin'].setValue(this.fotopersona[0]['imagen']);
@@ -91,7 +91,7 @@ export class ModimagenComponent implements OnInit {
   _handleReaderLoaded(e) {
     let reader = e.target;
     this.imageSrc = reader.result;
-    const id_persona = this.activatedRoute.snapshot.paramMap.get('id_persona')
+    const id_persona = localStorage.getItem('id_persona')
     
     const id_persona_log = localStorage.getItem('id_persona')
 

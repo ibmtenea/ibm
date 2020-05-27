@@ -14,6 +14,10 @@ export class ApiPersonas {
   constructor(private httpClient: HttpClient) {}
 
 
+  //turnos por rol
+  getTurnosReadByRol( id_rol:string ){
+      return this.httpClient.get(`${ this.PHP_API_SERVER}/ajax/turnos_read_by_rol.php?id_rol=${ id_rol }`);
+  }
 
   //obtener persona por id_tarea
   getPerson( id_persona ){
@@ -32,6 +36,7 @@ export class ApiPersonas {
 
 
   altaRegistroFoto(datosFoto) {
+  
     return this.httpClient.post(`${this.PHP_API_SERVER}/ajax/personas_update_foto.php`, datosFoto);
   } 
 
@@ -39,6 +44,16 @@ export class ApiPersonas {
   altaRegistro(datoregistro) {
       return this.httpClient.post(`${this.PHP_API_SERVER}/ajax/personas_crear.php`, JSON.stringify(datoregistro));
   }
+
+  getIdTurnoby( id_persona ){
+    return this.httpClient.get(`${ this.PHP_API_SERVER}/ajax/turnos_read_by__id_persona.php?id_persona=${ id_persona }`);
+ }
+
+ getTurnosbyID( id_persona ){
+  return this.httpClient.get(`${ this.PHP_API_SERVER}/ajax/turno_read_by_persona.php?id_persona=${ id_persona }`);
+ }
+ 
+
 
 
   actualizarRegistro(persona: Personas){

@@ -42,10 +42,10 @@ constructor(private httpClient: HttpClient,private servicioCompartido: SharedSer
 
         ngOnInit(){
             const id_persona = localStorage.getItem('id_persona');
-            this.dataService.getUserId ( id_persona )
+            this.dataService.getUserId ( localStorage.getItem('id_persona') )
               .subscribe( (respuesta:Personas) => {
                  this.user = respuesta;
-                
+                this.user.id_persona=localStorage.getItem('id_persona');
               });
         }
 

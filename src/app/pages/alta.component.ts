@@ -28,7 +28,7 @@ import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 export class AltaComponent {
 
     model: NgbDateStruct;
-
+    registro: Issue = new Issue();
     options: FullCalendarOptions;
    events: EventObject[];
 
@@ -79,7 +79,7 @@ export class AltaComponent {
 
 
         //cargo los roles para los combos select
-        httpClient.get<any[]>(this.PHP_API_SERVER + '/ajax/roles_read.php').subscribe(result => {
+        httpClient.get<any[]>(this.PHP_API_SERVER + '/ajax/roles_read_noadmin.php').subscribe(result => {
             this.roles = result;
           }, error => console.error(error));
  
@@ -94,6 +94,10 @@ export class AltaComponent {
   }
 
   ngOnInit(){
+
+
+
+
 
   }
 
@@ -117,14 +121,26 @@ export class AltaComponent {
       //enviamos el array a la funcions del server
       this.apiService.altaRegistro(this.datoregistro).subscribe(
         datos => {
+
+          console.log(this.datoregistro);
           Swal.fire({
             title: this.datoregistro.tarea,
             text: 'Registro añadido',
             icon: 'success',  
             showConfirmButton : true
-          })
-          ,this.recarga()
-          ;      
+          });
+
+          //una vez creada la tarea, obtenemos el lastId para abrir la tarea creada.
+          this.apiService.getLastId()
+          .subscribe((respuesta: any) => {
+            this.registro = respuesta;
+            const identif = JSON.stringify(this.registro).slice(1, -1);
+            const identificador = Constantes.ARND+identif+Constantes.BRND;
+            this.router.navigateByUrl(`/detalle/${identificador}`);
+          });
+
+          // ,this.recarga()
+          // ;      
         });
     }
   }
