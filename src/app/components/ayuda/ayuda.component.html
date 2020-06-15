@@ -1,61 +1,49 @@
-<a 
-        
-title="Ayuda"
-(click)="open(ayuda)"
-class="nav-link pointerplus"
-><i class="fa fa-question-circle mr-1 fa-1g"></i>
-Ayuda
+<a title="Ayuda" (click)="open(ayuda)" class="nav-link pointerplus"
+  ><i class="fa fa-question-circle mr-1 fa-1g"></i>
+  Ayuda
 </a>
-
-
 
 <ng-template #ayuda let-modal class="modal-lg">
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Ayuda</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
       <span aria-hidden="true">×</span>
     </button>
   </div>
   <div class="modal-body">
-
     <div *ngFor="let contenido of contenidoayuda">
-
-    <div id="card-966405">
+      <div id="card-966405">
         <div class="card">
-            <div class="card-header">
-                 <a class="card-link collapsed" 
-                 data-toggle="collapse" 
-                 data-parent="#card-966405" 
-                 href="#card-element-{{contenido.numauto}}">{{contenido.ayudatitulo}}</a>
+          <div class="card-header">
+            <a
+              class="card-link collapsed"
+              data-toggle="collapse"
+              data-parent="#card-966405"
+              href="#card-element-{{ contenido.numauto }}"
+              >{{ contenido.ayudatitulo }}</a
+            >
+          </div>
+          <div id="card-element-{{ contenido.numauto }}" class="collapse">
+            <div class="card-body">
+              {{ contenido.ayudatexto }}
             </div>
-            <div id="card-element-{{contenido.numauto}}" class="collapse">
-                <div class="card-body">
-                    {{contenido.ayudatexto}}
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cerrar</button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.close('Save click')"
+    >
+      Cerrar
+    </button>
   </div>
 </ng-template>

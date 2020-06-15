@@ -2,15 +2,10 @@ import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Constantes } from '../../models/constantes.model';
 import { HttpClient } from '@angular/common/http';
-import { PeriodicidadService } from '../../services/periodicidad.service';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Personas } from '../../models/personas';
 import { ApiPersonas } from '../../services/apipersonas.service';
-import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
-import { JpPreloadService } from '@jaspero/ng-image-preload';
-
-
 
 @Component({
   selector: 'app-modimagen',
@@ -21,60 +16,48 @@ export class ModimagenComponent implements OnInit {
 
   PHP_API_SERVER = Constantes.API_SERVER; //URL del servicio
   personas: Personas[] = [];
-  fotopersona:Personas = new Personas();
+  fotopersona: Personas = new Personas();
   accionForm: FormGroup;
   private imageSrc: string = '';
   datosFoto: string;
-    constructor(
-      private fb: FormBuilder, 
-      private activatedRoute: ActivatedRoute, 
-      private httpClient: HttpClient, 
-      private perioService: ApiPersonas
+  constructor(
+    private fb: FormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private httpClient: HttpClient,
+    private perioService: ApiPersonas
 
-      ) {
-        
-
-        //modificar valores por defecto en la pagina de insercion TODO
-        this.accionForm = this.fb.group({
-
-          fotopersona: ['', Validators.required],
-          id_persona: localStorage.getItem('id_persona'),
-          id_persona_log: localStorage.getItem('id_persona'),
-
-        });
-
-    }
+  ) {
 
 
+    //modificar valores por defecto en la pagina de insercion TODO
+    this.accionForm = this.fb.group({
+      fotopersona: ['', Validators.required],
+      id_persona: localStorage.getItem('id_persona'),
+      id_persona_log: localStorage.getItem('id_persona'),
+
+    });
+
+  }
 
   ngOnInit() {
-      this.cargaMadre();
-   
+    this.cargaMadre();
   }
-  
 
-  cargaMadre(){
+
+  cargaMadre() {
     const id_persona = localStorage.getItem('id_persona')
-    this.perioService.getFotografia(id_persona).subscribe( (respuesta: Personas) => {
-    this.fotopersona = respuesta;
-    //this.accionForm.controls['fechafin'].setValue(this.fotopersona[0]['imagen']);
-    
+    this.perioService.getFotografia(id_persona).subscribe((respuesta: Personas) => {
+      this.fotopersona = respuesta;
+      //this.accionForm.controls['fechafin'].setValue(this.fotopersona[0]['imagen']);
+
     });
   }
-
-
-
-
-
 
 
   //reload pagina al usar sweet alerts etc
   recarga() {
     location.reload();
   }
-
-
-
 
 
   handleInputChange(e) {
@@ -92,26 +75,26 @@ export class ModimagenComponent implements OnInit {
     let reader = e.target;
     this.imageSrc = reader.result;
     const id_persona = localStorage.getItem('id_persona')
-    
+
     const id_persona_log = localStorage.getItem('id_persona')
 
-    this.datosFoto = JSON.stringify({ "id_persona_log": id_persona_log ,"id_persona": id_persona , "fotopersona": this.imageSrc});
+    this.datosFoto = JSON.stringify({ "id_persona_log": id_persona_log, "id_persona": id_persona, "fotopersona": this.imageSrc });
     this.perioService.altaRegistroFoto(this.datosFoto).subscribe();
-    
+
     Swal.fire({
       text: 'Foto actualizada',
       icon: 'success',
       showConfirmButton: false
     })
-    , this.recarga()
-    ;
+      , this.recarga()
+      ;
 
 
   }
 
 
 
-   submitForm() {
+  submitForm() {
 
     // // const fechafin: FormControl = this.accionForm.get('fechafin') as FormControl;
     // // const repeticiones: FormControl = this.accionForm.get('repeticiones') as FormControl;
@@ -125,17 +108,7 @@ export class ModimagenComponent implements OnInit {
     // })
     // , this.recarga()
     // ;
-   }
-
-
-
-
-
-
-
-
-
-
+  }
 
 
 

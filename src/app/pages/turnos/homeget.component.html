@@ -29,7 +29,7 @@
     </div>
   </div>
   <div class="col-2 text-right">
-    <div *ngIf="registroroleperson.id_rol== '8' || registroroleperson.id_rol== '5' || registroroleperson.id_rol== '6'">
+    <div *ngIf="registroroleperson.id_rol== '8' ||  registroroleperson.id_rol== '6'">
       <a alt="Nuevo registro" title="nuevo registro" [routerLink]="['/', 'alta']" class="btn btn-info pt4 btn-circle posicionplus"><i class="fa fa-plus fa-3"></i></a>
     </div>
   </div>
@@ -117,7 +117,7 @@
           </ng-template>
         </ngx-datatable-column>
 
-        <ngx-datatable-column name="Hora" [maxWidth]="110">
+        <ngx-datatable-column name="ibm_hora" [maxWidth]="110">
           <ng-template
             ngx-datatable-cell-template
             let-rowIndex="rowIndex"
@@ -126,10 +126,10 @@
           >
             <span
               title="{{ 'txtDobleclickparaeditar' | translate }}"
-              (dblclick)="editing[rowIndex + '-hora'] = true"
-              *ngIf="!editing[rowIndex + '-hora']"
+              (dblclick)="editing[rowIndex + '-ibm_hora'] = true"
+              *ngIf="!editing[rowIndex + '-ibm_hora']"
             >
-              {{ value }}
+              {{ row.ibm_hora }}
             </span>
             <input
               required
@@ -140,8 +140,8 @@
               pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
               
               autofocus
-              (keyup.enter)="updateValue($event, 'hora', rowIndex)"
-              *ngIf="editing[rowIndex + '-hora']"
+              (keyup.enter)="updateValue($event, 'ibm_hora', rowIndex)"
+              *ngIf="editing[rowIndex + '-ibm_hora']"
               type="text"
               [value]="value"
               [title]="row.id_tarea"

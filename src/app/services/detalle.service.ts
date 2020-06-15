@@ -32,7 +32,7 @@ export class DetalleService {
                 ...persona
             };
             delete personaTemp.id_tarea;
-
+console.log(persona);
             return this.http.post(`${this.PHP_API_SERVER}/ajax/registro_update_detalle.php`, persona);  
 
         }

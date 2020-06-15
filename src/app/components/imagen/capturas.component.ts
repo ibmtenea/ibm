@@ -2,15 +2,10 @@ import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Constantes } from '../../models/constantes.model';
 import { HttpClient } from '@angular/common/http';
-import { PeriodicidadService } from '../../services/periodicidad.service';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Personas } from '../../models/personas';
 import { ApiPersonas } from '../../services/apipersonas.service';
-import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
-import { JpPreloadService } from '@jaspero/ng-image-preload';
-
-
 
 @Component({
   selector: 'app-capturas',
@@ -63,18 +58,10 @@ export class CapturasComponent implements OnInit {
   }
 
 
-
-
-
-
-
   //reload pagina al usar sweet alerts etc
   recarga() {
     location.reload();
   }
-
-
-
 
 
   handleInputChange(e) {

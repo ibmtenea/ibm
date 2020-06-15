@@ -163,23 +163,16 @@ export class DetalleComponent implements OnInit {
 
 
   guardarregistro(form: NgForm) {
-    if (this.registro.tarea == '' || this.registro.hora == '' || this.registro.estatus == '') {
+    if (this.registro.tarea == '' || this.registro.ibm_hora == '' || this.registro.estatus == '') {
       Swal.fire({
         text: 'Los campos obligatorios no pueden quedar vacíos',
         icon: 'error',
         showConfirmButton: true
       });
     } else {
-      var patronHora = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
-      var horaResult = patronHora.test(this.registro.hora);
 
-      if (horaResult == false) {
-        Swal.fire({
-          text: 'El campo Hora debe cumplir con el formato adecuado',
-          icon: 'error',
-          showConfirmButton: true
-        });
-      } else {
+
+    
         let peticion: Observable<any>;
         peticion = this.registroService.actualizarRegistro(this.registro);
         peticion.subscribe(respuesta => {
@@ -188,11 +181,13 @@ export class DetalleComponent implements OnInit {
             text: 'Registro modificado',
             icon: 'success',
             showConfirmButton: true
-          }), this.recarga();
+          })
+          
+          //, this.recarga();
 
         });
 
-      }
+      
 
     }
 

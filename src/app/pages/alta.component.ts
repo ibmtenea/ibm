@@ -57,7 +57,7 @@ export class AltaComponent {
         id_tarea: null,
         tarea: null,
         id_persona: localStorage.getItem('id_persona'),
-        hora: null,
+        ibm_hora: null,
         estatus: null,
         observaciones: null,
         id_categoria:  null,
@@ -111,7 +111,7 @@ export class AltaComponent {
   altaRegistro() {
 
     //si los campos obligatorios nos llegan vacios
-    if(this.datoregistro.tarea==null || this.datoregistro.hora==null ){
+    if(this.datoregistro.tarea==null || this.datoregistro.ibm_hora==null ){
       Swal.fire({
         title: 'Revise los datos',
         text: 'Los campos no pueden estar vacíos!!',
@@ -136,6 +136,7 @@ export class AltaComponent {
             this.registro = respuesta;
             const identif = JSON.stringify(this.registro).slice(1, -1);
             const identificador = Constantes.ARND+identif+Constantes.BRND;
+           
             this.router.navigateByUrl(`/detalle/${identificador}`);
           });
 

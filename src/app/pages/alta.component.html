@@ -49,20 +49,24 @@
 
       <div class="row">
         <div class="col-md-4">
+
+
+
+
           <div class="form-group 24hr-example">
-            <label for="hora">{{ "txtHora" | translate }}</label>
+            <label for="ibm_hora">{{ "txtHora" | translate }}</label>
             <input
               required
               aria-label="24hr format"
               style="background-color: white;"
               placeholder="00:00"
               class="form-control form-control-sm reloj"
-              [class.is-invalid]="hora.invalid && hora.touched"
-              #hora="ngModel"
+              [class.is-invalid]="ibm_hora.invalid && ibm_hora.touched"
+              #ibm_hora="ngModel"
               minlength="5"
               maxlength="5"
               type="text"
-              [(ngModel)]="datoregistro.hora"
+              [(ngModel)]="datoregistro.ibm_hora"
               [ngxTimepicker]="fullTime"
               [format]="24"
               readonly
@@ -72,6 +76,12 @@
               [minutesGap]="15"
             ></ngx-material-timepicker>
           </div>
+
+
+
+
+
+          
         </div>
 
         

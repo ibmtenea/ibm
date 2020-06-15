@@ -43,7 +43,7 @@ export class ElegirTurno  {
     rol_name: null,
     tarea: null,
     issueg: null,
-    hora: null,
+    ibm_hora: null,
     hour: null,
     estatus: null,
     status: null,
@@ -156,6 +156,7 @@ export class ElegirTurno  {
             this.registroRoleService.getTurnosReadByRol(id_rol)
             .subscribe( (respuesta:Turnos) => {
               this.listaturnos = respuesta;
+              
             });
 
 
@@ -165,6 +166,7 @@ export class ElegirTurno  {
             req.open('GET', `${this.PHP_API_SERVER}/ajax/registro_read_by_persona.php?id_persona=${id_persona}`);
             req.onload = () => {
               cb(JSON.parse(req.response));
+              console.log(JSON.parse(req.response));
             };
             req.send();
           
@@ -205,7 +207,7 @@ console.log(valor);
   //alta de registro
   altaRegistro() {
     //si los campos obligatorios nos llegan vacios
-    if (this.datoregistro.tarea == null || this.datoregistro.hora == null || this.datoregistro.estatus == null) {
+    if (this.datoregistro.tarea == null || this.datoregistro.ibm_hora == null || this.datoregistro.estatus == null) {
       Swal.fire({
         title: 'Revise los datos',
         text: 'Los campos no pueden estar vacíos!!',
@@ -242,7 +244,7 @@ console.log(valor);
     var horaResult = patronHora.test(this.valor);
 
     //si el campo que recibo es hora...
-    if (this.campo == "hora") {
+    if (this.campo == "ibm_hora") {
       //...valido su formato
       if (horaResult == false) {
         Swal.fire({
@@ -357,7 +359,7 @@ console.log(valor);
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
     const temp = this.temp.filter(function (d) {
-      return d.rol_name.toLowerCase().indexOf(val) !== -1 || d.tarea.toLowerCase().indexOf(val) !== -1 || d.hora.toLowerCase().indexOf(val) !== -1 || d.estatus.toLowerCase().indexOf(val) !== -1 || !val;
+      return d.rol_name.toLowerCase().indexOf(val) !== -1 || d.tarea.toLowerCase().indexOf(val) !== -1 || d.ibm_hora.toLowerCase().indexOf(val) !== -1 || d.estatus.toLowerCase().indexOf(val) !== -1 || !val;
     });
     // actualizamos las rows
     this.rows = temp;

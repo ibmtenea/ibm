@@ -1,6 +1,7 @@
 export class Issue {
   id_tarea: string;
   tarea: string;
+  ibm_hora: string;
   hora: string;
   estatus: string;
   observaciones: string;
