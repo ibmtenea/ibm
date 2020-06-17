@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-   wsUrl: 'http://joraco.site:5001'
+   wsUrl: 'http://ibmes.site:5001'
 };

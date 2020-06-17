@@ -16,7 +16,7 @@ export class ConstantesServicioService {
     this.http.get('https://jsonplaceholder.typicode.com/photos/1')
     .subscribe((respuesta: any) =>{
         // inicializar las variables de la clase Constante
-        Constantes.API_SERVER = "http://joraco.site:8081/b";
+        Constantes.API_SERVER = "http://ibmes.site:8081/b";
 
   
 
